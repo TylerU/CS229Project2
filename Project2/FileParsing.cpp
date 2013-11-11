@@ -2,6 +2,9 @@
 #include "FileParsing.h"
 #include <sstream>
 
+
+
+
 FileParser::FileParser(string file_n, SimOptions& opts) : options(opts){
 	in = fopen(file_n.c_str(), "r");
 	file_name = file_n;
@@ -56,7 +59,30 @@ void FileParser::readOptionsFile(){
 	
 };
 
-vector<vector<int>> FileParser::getPairs(){
+
+void StructElementParser::read(FILE *inf){
+
+}
+
+
+vector<int> TripleElementParser::getTriple(){
+	vector<int> vec = getVector(3);
+	ensureNextValidChar(';');
+	return vec;
+}
+
+void TripleElementParser::read(FILE* inf){
+
+}
+
+
+
+vector<int> PairsElementParser::getSinglePair(){
+	vector<int> vec = getVector(2);
+	return vec;
+}
+
+vector<vector<int>> PairsElementParser::getPairs(){
 	vector<vector<int>> vec;
 	consumeCommentsAndWhitespace();
 	char nextDelim = 0;
@@ -74,18 +100,11 @@ vector<vector<int>> FileParser::getPairs(){
 	return vec;
 }
 
-vector<int> FileParser::getTriple(){
-	vector<int> vec = getVector(3);
-	ensureNextValidChar(';');
-	return vec;
+void PairsElementParser::read(FILE* inf){
+
 }
 
-vector<int> FileParser::getSinglePair(){
-	vector<int> vec = getVector(2);
-	return vec;
-}
-
-vector<int> FileParser::getVector(int size){
+vector<int> VectorElementParser::getVector(int size){
 	vector<int> vec;
 	consumeCommentsAndWhitespace();
 	ensureNextValidChar('(');
@@ -105,7 +124,7 @@ vector<int> FileParser::getVector(int size){
 	return vec;
 }
 
-Range FileParser::getRangeValue(){
+Range RangeElementParser::getRangeValue(){
 	consumeCommentsAndWhitespace();
 	int high, low;
 	int result = fscanf(in, "%d", &low);
@@ -123,7 +142,11 @@ Range FileParser::getRangeValue(){
 	return Range(low, high);
 }
 
-string FileParser::getStringValue(){
+void RangeElementParser::read(FILE *inf){
+
+}
+
+string StringElementParser::getStringValue(){
 	stringstream ss;
 	ensureNextValidChar('"');
 	int c;
@@ -133,25 +156,29 @@ string FileParser::getStringValue(){
 	ensureNextValidChar(';');
 	return ss.str();
 }
+void StringElementParser::read(FILE* inf){
+	setInFile(inf);
+	//Probably broken
+	*dest = getStringValue();
+}
 
-void FileParser::ensureNextValidChar(char c){
+void ElementParser::ensureNextValidChar(char c){
 	consumeCommentsAndWhitespace();
 	ensureNextChar(c);
 }
 
-void FileParser::ensureNextChar(char c){
+void ElementParser::ensureNextChar(char c){
 	int next;
 	if((next=fgetc(in)) != c){
 		stringstream ss;
-		ss << "Unexpected character encountered while parsing";
-		ss << file_name;
+		ss << "Unexpected character encountered while parsing the input file";
 		ss << ". Expected: '" << c << "'. Encountered: '" << (char)next;
 
 		throw new runtime_error(ss.str());
 	}
 }
 
-void FileParser::consumeCommentsAndWhitespace(){
+void ElementParser::consumeCommentsAndWhitespace(){
 	consumeWhitespace();
 	char c = fgetc(in);		
 	while(c == '#'){
@@ -162,7 +189,7 @@ void FileParser::consumeCommentsAndWhitespace(){
 	ungetc(c, in);
 }
 
-void FileParser::consumeWhitespace(){
+void ElementParser::consumeWhitespace(){
 	int c;
 	while(isspace(c = fgetc(in))){
 	}
@@ -170,7 +197,7 @@ void FileParser::consumeWhitespace(){
 }
 
 
-bool FileParser::isEndOfLine(int c)
+bool ElementParser::isEndOfLine(int c)
 {
 	int eol = (c == '\r' || c == '\n');
 	if (c == '\r')
@@ -182,14 +209,14 @@ bool FileParser::isEndOfLine(int c)
 	return eol;
 }
 
-void FileParser::consumeUntilEndline(){
+void ElementParser::consumeUntilEndline(){
 	int c;
 
 	for(c = fgetc(in); c != EOF && !isEndOfLine(c); c = fgetc(in)){
 	}
 }
 
-void FileParser::getUntilWhitespaceOrMaxLen(char buffer[], int max){
+void ElementParser::getUntilWhitespaceOrMaxLen(char buffer[], int max){
 	int c;
 	int cur_pos = 0;
 	for(c = fgetc(in); c != EOF && !isspace(c) && cur_pos < max-1; c=fgetc(in), cur_pos++){
@@ -201,7 +228,7 @@ void FileParser::getUntilWhitespaceOrMaxLen(char buffer[], int max){
 	buffer[cur_pos] = '\0';
 }
 
-string FileParser::getUntilCharOrWhitespace(char find){
+string ElementParser::getUntilCharOrWhitespace(char find){
 	int c;
 	string s;
 	stringstream ss;
