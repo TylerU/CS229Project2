@@ -62,6 +62,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileParsing.cpp" />
+    <ClCompile Include="life.cpp" />
+    <ClCompile Include="SimOptions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileParsing.h" />
+    <ClInclude Include="SimOptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
