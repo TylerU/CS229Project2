@@ -1,3 +1,4 @@
+
 Life = {
 	String = "This is a string";
 	Range = -6#

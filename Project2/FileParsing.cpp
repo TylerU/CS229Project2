@@ -11,57 +11,91 @@ FileParser::FileParser(string file_n, SimOptions& opts) : options(opts){
 	if(!in){
 		throw new runtime_error("Unable to open the given file");
 	}
-	readOptionsFile();
+	readFile();
 }
 
-void FileParser::readOptionsFile(){
-	consumeCommentsAndWhitespace();
-	string fileType = getUntilCharOrWhitespace('=');
-	printf("\"%s\"\n", fileType.c_str());
-	consumeCommentsAndWhitespace();
-	ensureNextChar('=');
-	consumeCommentsAndWhitespace();
-	ensureNextChar('{');
-	consumeCommentsAndWhitespace();
-	string id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	string val = getStringValue();
-	printf("\"%s\" = \"%s\"\n", id.c_str(), val.c_str());
-	consumeCommentsAndWhitespace();
-	id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	Range rVal = getRangeValue();
-	printf("\"%s\" = %s\n", id.c_str(), rVal.toString().c_str());
-	consumeCommentsAndWhitespace();
-	id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	rVal = getRangeValue();
-	printf("\"%s\" = %s\n", id.c_str(), rVal.toString().c_str());
-	consumeCommentsAndWhitespace();
-	id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	vector<int> vec = getTriple();
-	printf("\"%s\" = (%d, %d, %d)\n", id.c_str(), vec[0], vec[1], vec[2]);
-	consumeCommentsAndWhitespace();
-	id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	vec = getSinglePair();
-	ensureNextValidChar(';');
-	printf("\"%s\" = (%d, %d)\n", id.c_str(), vec[0], vec[1]);
-	consumeCommentsAndWhitespace();
-	id = getUntilCharOrWhitespace('=');
-	ensureNextValidChar('=');
-	vector<vector<int>> pairs = getPairs();
-	for(int i = 0; i < pairs.size(); i++){
-		vec = pairs[i];
-		printf("\"%s\" = (%d, %d)\n", id.c_str(), vec[0], vec[1]);
-	}
+void FileParser::readFile(){
+	string id = getId();
+	options.setSimType(id);
+	StructElementParser *baseParser = createParser(id);//Does this work?
+	readOptionsFile(*baseParser);
+}
+
+string FileParser::getId(){
+	StringContainer sc("");
+	SimTypeParser tp(&sc);
+	tp.read(in);
+	return sc.getString();
+}
+
+StructElementParser *FileParser::createParser(string id){
+	StringElementParser *nameParser = new StringElementParser(&options.name);
+
+	RangeElementParser *terrainXParser = new RangeElementParser(&options.terrainX);
+	RangeElementParser *terrainYParser = new RangeElementParser(&options.terrainY);
+	RangeElementParser *windowXParser = new RangeElementParser(&options.windowX);
+	RangeElementParser *windowYParser = new RangeElementParser(&options.windowY);
 	
+	map<string, ElementParser*> *terrainStruct = new map<string, ElementParser*>();
+	terrainStruct->emplace("Xrange", terrainXParser);
+	terrainStruct->emplace("Yrange", terrainYParser);
+	StructElementParser *terrainParser = new StructElementParser(terrainStruct);
+
+	map<string, ElementParser*> *windowStruct = new map<string, ElementParser*>();
+	windowStruct->emplace("Xrange", windowXParser);
+	windowStruct->emplace("Yrange", windowYParser);
+	StructElementParser *windowParser = new StructElementParser(windowStruct);
+
+	map<string, ElementParser*> *mainStruct = new map<string, ElementParser*>();
+	mainStruct->emplace("Name", nameParser);
+	mainStruct->emplace("Terrain", terrainParser);
+	mainStruct->emplace("Window", windowParser);
+	
+	StructElementParser *mainParser = new StructElementParser(mainStruct);
+	return mainParser;
+}
+
+void FileParser::readOptionsFile(StructElementParser& outerParser){
+	outerParser.read(in);
 };
 
+void SimTypeParser::read(FILE *inf){
+	setInFile(inf);
+	consumeCommentsAndWhitespace();
+	string fileType = getUntilCharOrWhitespace('=');
+	ensureNextValidChar('=');
+	dest->setString(fileType);
+	consumeCommentsAndWhitespace();
+}
 
 void StructElementParser::read(FILE *inf){
+	setInFile(inf);
+	ensureNextValidChar('{');
+	while(getNextValidChar() != '}'){
+		consumeCommentsAndWhitespace();
+		string id = getUntilCharOrWhitespace('=');
+		ensureNextValidChar('=');
+		consumeCommentsAndWhitespace();
+		ElementParser *parser = getElement(id);
+		if(parser){
+			parser->read(in);
+		}
+		else{
+			throw new runtime_error("Invalid key encountered");
+		}
+	}
+	ensureNextValidChar('}');
+	ensureNextValidChar(';');
+}
 
+ElementParser *StructElementParser::getElement(string key){
+	map<string, ElementParser*>::iterator it = elements->find(key);
+	if(it != elements->end()){
+		return it->second;
+	}
+	else{
+		return false;
+	}
 }
 
 
@@ -72,7 +106,9 @@ vector<int> TripleElementParser::getTriple(){
 }
 
 void TripleElementParser::read(FILE* inf){
-
+	setInFile(inf);
+	vector<int> trip = getTriple();
+	dest->setTriple(trip[0], trip[1], trip[3]);
 }
 
 
@@ -101,7 +137,11 @@ vector<vector<int>> PairsElementParser::getPairs(){
 }
 
 void PairsElementParser::read(FILE* inf){
-
+	setInFile(inf);
+	vector<vector<int>> pairs = getPairs();
+	for(int i = 0; i < pairs.size(); i++){
+		dest->addPair(pairs[i][0], pairs[i][1]);
+	}
 }
 
 vector<int> VectorElementParser::getVector(int size){
@@ -143,7 +183,10 @@ Range RangeElementParser::getRangeValue(){
 }
 
 void RangeElementParser::read(FILE *inf){
-
+	setInFile(inf);
+	Range result = getRangeValue();
+	dest->setHigh(result.getHigh());
+	dest->setLow(result.getLow());
 }
 
 string StringElementParser::getStringValue(){
@@ -165,6 +208,13 @@ void StringElementParser::read(FILE* inf){
 void ElementParser::ensureNextValidChar(char c){
 	consumeCommentsAndWhitespace();
 	ensureNextChar(c);
+}
+
+char ElementParser::getNextValidChar(){
+	consumeCommentsAndWhitespace();
+	int c = fgetc(in);
+	ungetc(c, in);
+	return (char)c;
 }
 
 void ElementParser::ensureNextChar(char c){
@@ -190,10 +240,12 @@ void ElementParser::consumeCommentsAndWhitespace(){
 }
 
 void ElementParser::consumeWhitespace(){
-	int c;
-	while(isspace(c = fgetc(in))){
+	int c = 0;
+	while(isspace(c = fgetc(in)) && c != EOF){
 	}
-	ungetc(c, in);
+	if(!isspace(c)){
+		ungetc(c, in);
+	}
 }
 
 

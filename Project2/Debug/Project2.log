@@ -1,68 +1,33 @@
-﻿Build started 11/10/2013 10:50:53 PM.
+﻿Build started 11/13/2013 12:07:29 AM.
      1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Project2\Project2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt FileParsing.cpp SimOptions.cpp life.cpp
          FileParsing.cpp
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2236: unexpected token 'class'. Did you forget a ';'?
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2143: syntax error : missing ';' before '{'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2447: '{' : missing function header (old-style formal list?)
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(8): error C2653: 'FileParser' : is not a class or namespace name
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(8): error C2550: 'FileParser' : constructor initializer lists are only allowed on constructor definitions
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(9): error C2065: 'in' : undeclared identifier
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(10): error C2065: 'file_name' : undeclared identifier
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(11): error C2065: 'in' : undeclared identifier
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(14): error C3861: 'readOptionsFile': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(15): warning C4508: 'FileParser' : function should return a value; 'void' return type assumed
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(17): error C2653: 'FileParser' : is not a class or namespace name
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(18): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(19): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(21): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(22): error C3861: 'ensureNextChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(23): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(24): error C3861: 'ensureNextChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(25): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(26): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(27): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(28): error C3861: 'getStringValue': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(30): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(31): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(32): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(33): error C3861: 'getRangeValue': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(35): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(36): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(37): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(38): error C3861: 'getRangeValue': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(40): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(41): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(42): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(43): error C3861: 'getTriple': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(45): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(46): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(47): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(48): error C3861: 'getSinglePair': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(49): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(51): error C3861: 'consumeCommentsAndWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(52): error C3861: 'getUntilCharOrWhitespace': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(53): error C3861: 'ensureNextValidChar': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(54): error C3861: 'getPairs': identifier not found
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(55): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(209): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-         Generating Code...
-         Compiling...
-         SimOptions.cpp
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(79): warning C4141: 'virtual' : used more than once
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(218) : see declaration of 'fopen'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(142): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(154): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(170): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(177): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 11.0\vc\include\stdio.h(237) : see declaration of 'fscanf'
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.cpp(261): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
          Generating Code...
          Compiling...
          life.cpp
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2236: unexpected token 'class'. Did you forget a ';'?
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2143: syntax error : missing ';' before '{'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(133): error C2447: '{' : missing function header (old-style formal list?)
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\life.cpp(8): error C2065: 'FileParser' : undeclared identifier
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\life.cpp(8): error C2146: syntax error : missing ';' before identifier 'p'
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\life.cpp(8): error C3861: 'p': identifier not found
+     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\fileparsing.h(79): warning C4141: 'virtual' : used more than once
          Generating Code...
-     1>Done Building Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Project2\Project2.vcxproj" (Build target(s)) -- FAILED.
+         Skipping... (no relevant changes detected)
+         SimOptions.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.lib" /MACHINE:X86 Debug\FileParsing.obj
+         Debug\life.obj
+         Debug\SimOptions.obj
+         Project2.vcxproj -> C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.exe
+     1>Done Building Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Project2\Project2.vcxproj" (Build target(s)).
 
-Build FAILED.
+Build succeeded.
 
-Time Elapsed 00:00:01.89
+Time Elapsed 00:00:01.68

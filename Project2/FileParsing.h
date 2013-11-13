@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string>
-#include "SimOptions.cpp"
+#include "SimOptions.h"
 #include <sstream>
 #include <vector>
 #include <map>
@@ -12,37 +12,13 @@
 using namespace std;
 
 
-class Range{
-private:
-	int high;
-	int low;
-public:
-	Range(){
-		high = 0;
-		low = 0;
-	}
-	Range(int l, int h){
-		high = h;
-		low = l;
-	}
-	inline int getHigh(){ return high; }
-	inline int getLow(){ return low; }
-	inline void setHigh(int h){ high = h; }
-	inline void setLow(int l){ low = l; }
-	inline string toString(){
-		stringstream ss;
-		ss << low << ".." << high;
-		return ss.str();
-	}
-};
 
 class ElementParser{
 protected:
 	FILE* in;
 protected:
 	void consumeCommentsAndWhitespace();
-	//vector<int> getTriple();
-	//vector<vector<int>> getPairs();
+	char getNextValidChar();
 	void ensureNextValidChar(char c);
 	void ensureNextChar(char c);
 	void consumeWhitespace();
@@ -60,16 +36,26 @@ public:
 	virtual void read(FILE *inf) =0;
 };
 
+class SimTypeParser : public ElementParser{
+private:
+	StringContainer *dest;
+public:
+	SimTypeParser(StringContainer *destination) : ElementParser() {
+		dest = destination;
+	}
+	virtual void read(FILE *inf);
+};
+
 class StringElementParser : public ElementParser{
 private:
-	string *dest;
+	StringContainer *dest;
 private:
 	string getStringValue();
 public:
-	StringElementParser(string *destination): ElementParser(){
+	StringElementParser(StringContainer *destination): ElementParser(){
 		dest = destination;
 	}
-	void read(FILE *inf);
+	virtual void read(FILE *inf);
 };
 
 class RangeElementParser : public ElementParser{
@@ -81,7 +67,7 @@ public:
 	RangeElementParser(Range *destination): ElementParser(){
 		dest = destination;
 	}
-	void read(FILE *inf);
+	virtual void read(FILE *inf);
 };
 
 class VectorElementParser : public ElementParser{
@@ -90,45 +76,46 @@ protected:
 public:
 	VectorElementParser(): ElementParser(){
 	}
-	virtual void read(FILE *inf) =0;
+	virtual virtual void read(FILE *inf) =0;
 };
 
 class PairsElementParser : public VectorElementParser{
 private:
-	vector<vector<int>> *dest;
+	PairList *dest;
 private:
 	vector<vector<int>> getPairs();
 	vector<int> getSinglePair();
 public:
-	PairsElementParser(vector<vector<int>> *destination): VectorElementParser(){
+	PairsElementParser(PairList *destination): VectorElementParser(){
 		dest = destination;
 	}
-	void read(FILE *inf);
+	virtual void read(FILE *inf);
 };
 
 class TripleElementParser : public VectorElementParser{
 private:
-	vector<vector<int>> *dest;
+	Triple *dest;
 private:
 	vector<int> getTriple();
 public:
-	TripleElementParser(vector<vector<int>> *destination): VectorElementParser(){
+	TripleElementParser(Triple *destination): VectorElementParser(){
 		dest = destination;
 	}
-	void read(FILE *inf);
+	virtual void read(FILE *inf);
 };
 
 
 class StructElementParser : public ElementParser{
 private:
-	map<string, ElementParser*> elements;
+	map<string, ElementParser*> *elements;
 private:
+	ElementParser* getElement(string key);
 public:
-	StructElementParser(map<string, ElementParser*> elems): ElementParser(){
+	StructElementParser(map<string, ElementParser*> *elems): ElementParser(){
 		elements = elems;
 	}
-	void read(FILE *inf);
-}
+	virtual void read(FILE *inf);
+};
 
 class FileParser{
 public:
@@ -138,7 +125,10 @@ private:
 	SimOptions &options;
 	string file_name;
 private:
-	void readOptionsFile();
+	void readFile();
+	string getId();
+	StructElementParser *createParser(string id);
+	void readOptionsFile(StructElementParser& outerParser);
 };
 
 #endif
