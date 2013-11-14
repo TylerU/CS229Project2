@@ -4,37 +4,28 @@
 
 
 
+ParserCreator::ParserCreator(SimOptions *options) : opts(options){
+	parser = NULL;
+}
 
-FileParser::FileParser(string file_n, SimOptions& opts) : options(opts){
-	in = fopen(file_n.c_str(), "r");
-	file_name = file_n;
-	if(!in){
-		throw new runtime_error("Unable to open the given file");
+StructElementParser *ParserCreator::getParser(){
+	if(!parser){
+		parser = new StructElementParser(new map<string, ElementParser*>());
+		addParserOptions();
+		return parser;
 	}
-	readFile();
+	else{
+		return parser;
+	}
 }
 
-void FileParser::readFile(){
-	string id = getId();
-	options.setSimType(id);
-	StructElementParser *baseParser = createParser(id);//Does this work?
-	readOptionsFile(*baseParser);
-}
+void ParserCreator::addParserOptions(){
+	StringElementParser *nameParser = new StringElementParser(&opts->name);
 
-string FileParser::getId(){
-	StringContainer sc("");
-	SimTypeParser tp(&sc);
-	tp.read(in);
-	return sc.getString();
-}
-
-StructElementParser *FileParser::createParser(string id){
-	StringElementParser *nameParser = new StringElementParser(&options.name);
-
-	RangeElementParser *terrainXParser = new RangeElementParser(&options.terrainX);
-	RangeElementParser *terrainYParser = new RangeElementParser(&options.terrainY);
-	RangeElementParser *windowXParser = new RangeElementParser(&options.windowX);
-	RangeElementParser *windowYParser = new RangeElementParser(&options.windowY);
+	RangeElementParser *terrainXParser = new RangeElementParser(&opts->terrainX);
+	RangeElementParser *terrainYParser = new RangeElementParser(&opts->terrainY);
+	RangeElementParser *windowXParser = new RangeElementParser(&opts->windowX);
+	RangeElementParser *windowYParser = new RangeElementParser(&opts->windowY);
 	
 	map<string, ElementParser*> *terrainStruct = new map<string, ElementParser*>();
 	terrainStruct->emplace("Xrange", terrainXParser);
@@ -46,18 +37,81 @@ StructElementParser *FileParser::createParser(string id){
 	windowStruct->emplace("Yrange", windowYParser);
 	StructElementParser *windowParser = new StructElementParser(windowStruct);
 
+
+
+	map<string, ElementParser*> *charsStruct = new map<string, ElementParser*>();
+	vector<string> validIds = opts->getValidIdentifiers();
+	for(int i = 0; i < validIds.size(); i++){
+			charsStruct->emplace(validIds[i], new IntElementParser(opts->getDisplayInfoObj(validIds[i])->ascii));
+	}
+	StructElementParser *charsParser = new StructElementParser(charsStruct);
+
+	map<string, ElementParser*> *colorsStruct = new map<string, ElementParser*>();
+	for(int i = 0; i < validIds.size(); i++){
+			colorsStruct->emplace(validIds[i], new TripleElementParser(opts->getDisplayInfoObj(validIds[i])->color));
+	}
+	StructElementParser *colorsParser = new StructElementParser(colorsStruct);
+
+	map<string, ElementParser*> *initialStruct = new map<string, ElementParser*>();
+	for(int i = 0; i < validIds.size(); i++){
+		initialStruct->emplace(validIds[i], new PairsElementParser(opts->getInitialList(validIds[i])));
+	}
+	StructElementParser *initialParser = new StructElementParser(initialStruct);
+
 	map<string, ElementParser*> *mainStruct = new map<string, ElementParser*>();
 	mainStruct->emplace("Name", nameParser);
 	mainStruct->emplace("Terrain", terrainParser);
 	mainStruct->emplace("Window", windowParser);
-	
-	StructElementParser *mainParser = new StructElementParser(mainStruct);
-	return mainParser;
+	mainStruct->emplace("Chars", charsParser);
+	mainStruct->emplace("Colors", colorsParser);
+	mainStruct->emplace("Initial", initialParser);
+
+	parser = new StructElementParser(mainStruct);
 }
+
+
+FileParser::FileParser(string file_n){
+	in = fopen(file_n.c_str(), "r");
+	file_name = file_n;
+	if(!in){
+		throw new runtime_error("Unable to open the given file");
+	}
+}
+
+void FileParser::readFile(){
+	StructElementParser *baseParser = myParser->getParser();//Does this work?
+	readOptionsFile(*baseParser);
+	freeParser(baseParser);
+}
+
+void FileParser::freeParser(StructElementParser *baseParser){
+	delete baseParser;
+}
+
+string FileParser::getId(){
+	StringContainer sc("");
+	SimTypeParser tp(&sc);
+	tp.read(in);
+	return sc.getString();
+}
+
 
 void FileParser::readOptionsFile(StructElementParser& outerParser){
 	outerParser.read(in);
 };
+
+void IntElementParser::read(FILE *inf){
+	setInFile(inf);
+	consumeCommentsAndWhitespace();
+	int i;
+	int res = fscanf(in, "%d", &i);
+	if(res != 1){
+		throw new runtime_error("Unable to read int");
+	}
+	ensureNextValidChar(';');
+	consumeCommentsAndWhitespace();
+	dest->setInt(i);
+}
 
 void SimTypeParser::read(FILE *inf){
 	setInFile(inf);
@@ -108,7 +162,7 @@ vector<int> TripleElementParser::getTriple(){
 void TripleElementParser::read(FILE* inf){
 	setInFile(inf);
 	vector<int> trip = getTriple();
-	dest->setTriple(trip[0], trip[1], trip[3]);
+	dest->setTriple(trip[0], trip[1], trip[2]);
 }
 
 
@@ -193,8 +247,11 @@ string StringElementParser::getStringValue(){
 	stringstream ss;
 	ensureNextValidChar('"');
 	int c;
-	while((c = fgetc(in)) != '"'){
+	while((c = fgetc(in)) != '"' && c != EOF){
 		ss << (char) c;
+	}
+	if(c==EOF){
+		throw new runtime_error("Unexpected EOF encountered");
 	}
 	ensureNextValidChar(';');
 	return ss.str();
@@ -243,6 +300,11 @@ void ElementParser::consumeWhitespace(){
 	int c = 0;
 	while(isspace(c = fgetc(in)) && c != EOF){
 	}
+	
+	if(c == EOF){
+		throw new runtime_error("Unexpected EOF encountered");
+	}
+
 	if(!isspace(c)){
 		ungetc(c, in);
 	}
@@ -266,6 +328,9 @@ void ElementParser::consumeUntilEndline(){
 
 	for(c = fgetc(in); c != EOF && !isEndOfLine(c); c = fgetc(in)){
 	}
+	if(c == EOF){
+		throw new runtime_error("Unexpected EOF encountered");
+	}
 }
 
 void ElementParser::getUntilWhitespaceOrMaxLen(char buffer[], int max){
@@ -273,6 +338,9 @@ void ElementParser::getUntilWhitespaceOrMaxLen(char buffer[], int max){
 	int cur_pos = 0;
 	for(c = fgetc(in); c != EOF && !isspace(c) && cur_pos < max-1; c=fgetc(in), cur_pos++){
 		buffer[cur_pos] = c;
+	}
+	if(c == EOF){
+		throw new runtime_error("Unexpected EOF encountered");
 	}
 	if(isspace(c)){
 		ungetc(c, in);
@@ -287,6 +355,11 @@ string ElementParser::getUntilCharOrWhitespace(char find){
 	for(c = fgetc(in); c != EOF && c != find && !isspace(c); c=fgetc(in)){
 		ss << (char)c;
 	}
+	
+	if(c == EOF){
+		throw new runtime_error("Unexpected EOF encountered");
+	}
+
 	if(c==find || isspace(c)){
 		ungetc(c, in);
 	}

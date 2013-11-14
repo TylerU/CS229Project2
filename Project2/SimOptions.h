@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <map>
 
 using namespace std;
 
@@ -25,14 +26,14 @@ class IntContainer{
 private:
 	int i;
 public:
-	IntContainer(int _i){
-		i = _i;
-	}
-	void setInt(int _i){
-		i = _i;
+	IntContainer(int ii){
+		i = ii;
 	}
 	int getInt(){
 		return i;
+	}
+	void setInt(int ii){
+		i = ii;
 	}
 };
 
@@ -64,7 +65,8 @@ public:
 };
 
 
-class Pair{private:
+class Pair{
+private:
 	int first;
 	int second;
 public:
@@ -94,7 +96,7 @@ public:
 		pairs.push_back(Pair(f,s));
 	}
 	//Too lazy to write more getters.
-	const vector<Pair> getPairVector(){
+	vector<Pair> getPairVector(){
 		return pairs;
 	}
 };
@@ -124,18 +126,37 @@ public:
 };
 
 
+
+class StateDisplayInfo{
+public:
+	IntContainer *ascii;
+	Triple *color;
+	StateDisplayInfo(int defaultChar, int c1, int c2, int c3){
+		ascii = new IntContainer(defaultChar);
+		color = new Triple(c1, c2, c3);
+	}
+	~StateDisplayInfo(){
+		delete ascii;
+		delete color;
+	}
+};
+
 class SimOptions{
-private:
+protected:
+	map<string, StateDisplayInfo *> displayInfo;
+	map<string, PairList *> initial;
 	string simulationId;
 public:
-	SimOptions() : name("") {
-
-	}
+	SimOptions() : name("") {}
 	StringContainer name;
 	Range terrainX;
 	Range terrainY;
 	Range windowX;
 	Range windowY;
+
+	StateDisplayInfo *getDisplayInfoObj(string state){
+		return displayInfo[state];
+	}
 
 	void setSimType(string id){
 		simulationId = id;
@@ -143,6 +164,29 @@ public:
 	string getSimType(){
 		return simulationId;
 	}
+	PairList *getInitialList(string id){
+		return initial[id];
+	}
+	virtual vector<string> getValidIdentifiers()=0;
+	virtual string getDefaultStateString()=0;
 };
 
+class LifeSimOptions : public SimOptions{
+public:
+	LifeSimOptions(){
+		displayInfo.emplace("Alive", new StateDisplayInfo('@', 0,0,0));
+		displayInfo.emplace("Dead", new StateDisplayInfo('-', 255,255,255));
+		initial.emplace("Alive", new PairList());
+		initial.emplace("Dead", new PairList());
+	}
+	virtual vector<string> getValidIdentifiers(){
+		vector<string> result;
+		result.push_back("Alive");
+		result.push_back("Dead");
+		return result;
+	}
+	virtual string getDefaultStateString(){
+		return "Dead";
+	}
+};
 #endif

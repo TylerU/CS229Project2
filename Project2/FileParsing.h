@@ -13,6 +13,8 @@ using namespace std;
 
 
 
+
+
 class ElementParser{
 protected:
 	FILE* in;
@@ -34,6 +36,18 @@ public:
 		in = inf;
 	}
 	virtual void read(FILE *inf) =0;
+	virtual ~ElementParser(){
+	}
+};
+
+class IntElementParser : public ElementParser {
+private:
+	IntContainer *dest;
+public:
+	IntElementParser(IntContainer *destination) : ElementParser() {
+		dest = destination;
+	}
+	virtual void read(FILE *inf);
 };
 
 class SimTypeParser : public ElementParser{
@@ -109,25 +123,54 @@ class StructElementParser : public ElementParser{
 private:
 	map<string, ElementParser*> *elements;
 private:
-	ElementParser* getElement(string key);
 public:
 	StructElementParser(map<string, ElementParser*> *elems): ElementParser(){
 		elements = elems;
 	}
+	ElementParser* getElement(string key);
+	void addParserKeyword(string key, ElementParser *parser){
+		elements->emplace(key, parser);
+	}
 	virtual void read(FILE *inf);
+	virtual ~StructElementParser(){
+		for(std::map<string,ElementParser*>::iterator iter = elements->begin(); iter != elements->end(); ++iter)
+		{
+			delete iter->second;
+		}
+		delete elements;
+	}
+};
+
+
+class ParserCreator{
+protected:
+	StructElementParser *parser;
+	SimOptions* opts;
+	virtual void addParserOptions();
+public:
+	ParserCreator(SimOptions* options);
+	
+	StructElementParser *getParser();
 };
 
 class FileParser{
 public:
-	FileParser(string file_name, SimOptions& opts);
+	FileParser(string file_name);
+	string getId();
+	void setSimOptions(SimOptions *opts){
+		options = opts;
+	}
+	void setParser(ParserCreator *parser){
+		myParser = parser;
+	}
+	void readFile();
 private:
 	FILE *in;
-	SimOptions &options;
+	SimOptions *options;
 	string file_name;
+	ParserCreator *myParser;
 private:
-	void readFile();
-	string getId();
-	StructElementParser *createParser(string id);
+	void freeParser(StructElementParser *baseParser);
 	void readOptionsFile(StructElementParser& outerParser);
 };
 
