@@ -7,6 +7,11 @@
 
 using namespace std;
 
+enum OutputType{
+	FileOutput,
+	VisualOutput
+};
+
 class StringContainer{
 private:
 	string str;
@@ -78,11 +83,14 @@ public:
 		first = f;
 		second = s;
 	}
-	int getFirst(){
+	int getFirst() const{
 		return first;
 	}
-	int getSecond(){
+	int getSecond() const{
 		return second;
+	}
+	bool operator==(const Pair& p){
+		return getFirst() == p.getFirst() && getSecond() == p.getSecond();
 	}
 };
 
@@ -96,8 +104,23 @@ public:
 		pairs.push_back(Pair(f,s));
 	}
 	//Too lazy to write more getters.
-	vector<Pair> getPairVector(){
-		return pairs;
+	vector<Pair> *getPairVector(){
+		return &pairs;
+	}
+	bool contains(Pair p){
+		for(int i = 0; i < pairs.size(); i++){
+			if(p == pairs.at(i)){
+				return true;
+			}
+		}
+		return false;
+	}
+	void remove(Pair p){
+		for(int i = 0; i < pairs.size(); i++){
+			if(p == pairs.at(i)){
+				pairs.erase(pairs.begin() + i);
+			}
+		}
 	}
 };
 
@@ -111,6 +134,7 @@ public:
 		low = 0;
 	}
 	Range(int l, int h){
+		if(l>h) throw new runtime_error("Invalid range. Low is larger than high");
 		high = h;
 		low = l;
 	}
@@ -146,13 +170,23 @@ protected:
 	map<string, StateDisplayInfo *> displayInfo;
 	map<string, PairList *> initial;
 	string simulationId;
+	OutputType outputType;
+	int outputGeneration;
+	bool showHelp;
+
 public:
-	SimOptions() : name("") {}
 	StringContainer name;
 	Range terrainX;
 	Range terrainY;
 	Range windowX;
 	Range windowY;
+
+public:
+	SimOptions() : name(""), simulationId("") {
+		outputGeneration = 0;
+		outputType = VisualOutput;
+		showHelp = false;
+	}
 
 	StateDisplayInfo *getDisplayInfoObj(string state){
 		return displayInfo[state];
@@ -161,12 +195,54 @@ public:
 	void setSimType(string id){
 		simulationId = id;
 	}
+	
 	string getSimType(){
 		return simulationId;
 	}
+	
 	PairList *getInitialList(string id){
 		return initial[id];
 	}
+	
+	void setOutputType(OutputType type){
+		outputType = type;
+	}
+	
+	OutputType getOutputType(){
+		return outputType;
+	}
+	
+	void setOutputGeneration(int gen){
+		outputGeneration = gen;
+	}
+	
+	int getOutputGeneration(){
+		return outputGeneration;
+	}
+	
+	void showOnlyHelpScreen(){
+		showHelp = true;
+	}
+
+	/*
+		Set any defaults that are reliant upon other values being set. Namely, the window ranges.
+		This is called after ALL argument setting is done. 
+	*/
+	virtual void resolveDefaults(){
+		if(windowX.getHigh() == 0 && windowX.getLow() == 0){
+			windowX.setHigh(terrainX.getHigh());
+			windowX.setLow(terrainX.getLow());
+		}
+		if(windowY.getHigh() == 0 && windowY.getLow() == 0){
+			windowY.setHigh(terrainY.getHigh());
+			windowY.setLow(terrainY.getLow());
+		}
+	}
+
+	char getCharforState(string s){
+		return (char) displayInfo.at(s)->ascii->getInt();
+	}
+
 	virtual vector<string> getValidIdentifiers()=0;
 	virtual string getDefaultStateString()=0;
 };

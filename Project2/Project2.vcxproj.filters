@@ -24,12 +24,24 @@
     <ClCompile Include="SimOptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ArgumentParsing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SimOptions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="FileParsing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ArgumentParsing.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

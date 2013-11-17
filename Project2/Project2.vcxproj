@@ -62,12 +62,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ArgumentParsing.cpp" />
     <ClCompile Include="FileParsing.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="SimOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArgumentParsing.h" />
     <ClInclude Include="FileParsing.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="SimOptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

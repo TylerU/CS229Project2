@@ -1,5 +1,8 @@
 #include "SimOptions.h"
 #include "FileParsing.h"
+#include "ArgumentParsing.h"
+#include "Grid.h"
+
 
 bool ensureCorrect(SimOptions *opts){
 	if(	opts->name.getString() != "Figure 3 example" || 
@@ -14,32 +17,43 @@ bool ensureCorrect(SimOptions *opts){
 		opts->getDisplayInfoObj("Dead")->ascii->getInt() != 126 ||
 		opts->getDisplayInfoObj("Dead")->color->getFirst() != 64 ||
 		opts->getDisplayInfoObj("Dead")->color->getSecond() != 64 ||
-		opts->getDisplayInfoObj("Dead")->color->getThird() != 64 ||
-		opts->getInitialList("Alive")->getPairVector()[0].getFirst() != -2 ||
+		opts->getDisplayInfoObj("Dead")->color->getThird() != 64 //||
+		/*opts->getInitialList("Alive")->getPairVector()[0].getFirst() != -2 ||
 		opts->getInitialList("Alive")->getPairVector()[0].getSecond() != 1 ||
 		opts->getInitialList("Alive")->getPairVector()[5].getFirst() != 4 ||
 		opts->getInitialList("Alive")->getPairVector()[5].getSecond() != -1 ||
-		opts->getInitialList("Dead")->getPairVector().size() != 0 
+		opts->getInitialList("Dead")->getPairVector().size() != 0 */
 	){
 		return false;
 	}
 	return true;
 }
 
-int main(int artc, char* argv[]){
+int main(int argc, char* argv[]){
 	try{
 		SimOptions *options = NULL;
-		FileParser p("lifeIn1.txt");
-		string type = p.getId();
+		ArgumentParser ap(argc, argv);
+		FileParser fp(ap.getFileNameOrEmptyString());
+		string type = fp.getId();
 		if(type == "Life"){
-			p.setSimOptions(options = new LifeSimOptions());
-			p.setParser(new ParserCreator(options));
+			fp.setSimOptions(options = new LifeSimOptions());
+			ap.setOptions(options);
+			fp.setParser(new ParserCreator(options));
 			options->setSimType(type);
 		}
-		p.readFile();
-		//printf("%s\n", ensureCorrect(options) ? "true" : "false");
+		fp.readFile();
+		ap.parse();
+		options->resolveDefaults();
+
+		Grid g(options->terrainX, options->terrainY, options);
+		for(int y = options->windowY.getLow(); y <= options->windowY.getHigh(); y++){
+			for(int x = options->windowX.getLow(); x <= options->windowX.getHigh(); x++){
+				printf("%c", options->getCharforState(g.getStateOfCoord(x,y)));
+			}
+			printf("\n");
+		}
 	}catch (runtime_error e){
-		printf("Error encountered: %s\n", e.what());
+		fprintf(stderr, "Error encountered: %s\n", e.what());
 	}
 
 	system("pause");

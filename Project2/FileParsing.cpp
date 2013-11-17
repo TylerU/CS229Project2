@@ -71,14 +71,24 @@ void ParserCreator::addParserOptions(){
 
 
 FileParser::FileParser(string file_n){
-	in = fopen(file_n.c_str(), "r");
-	file_name = file_n;
+	if(file_n == ""){
+		in = stdin;
+		file_name = string("stdin");
+	}
+	else{
+		in = fopen(file_n.c_str(), "r");
+		file_name = file_n;
+	}
+	options = NULL;
+	myParser = NULL;
 	if(!in){
 		throw new runtime_error("Unable to open the given file");
 	}
 }
 
 void FileParser::readFile(){
+	if(options == NULL) throw new runtime_error("Invalid state. You cannot parse the input file before setting a valid options object");
+	if(myParser == NULL) throw new runtime_error("Invalid state. You cannot parse the input file before setting a valid parser object");
 	StructElementParser *baseParser = myParser->getParser();//Does this work?
 	readOptionsFile(*baseParser);
 	freeParser(baseParser);
