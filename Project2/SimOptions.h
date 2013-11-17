@@ -8,8 +8,8 @@
 using namespace std;
 
 enum OutputType{
-	FileOutput,
-	VisualOutput
+	FILEOUT,
+	VISUALOUT
 };
 
 class StringContainer{
@@ -104,7 +104,7 @@ public:
 		pairs.push_back(Pair(f,s));
 	}
 	//Too lazy to write more getters.
-	vector<Pair> *getPairVector(){
+	const vector<Pair> const *getPairVector() const{
 		return &pairs;
 	}
 	bool contains(Pair p){
@@ -184,31 +184,31 @@ public:
 public:
 	SimOptions() : name(""), simulationId("") {
 		outputGeneration = 0;
-		outputType = VisualOutput;
+		outputType = VISUALOUT;
 		showHelp = false;
 	}
 
-	StateDisplayInfo *getDisplayInfoObj(string state){
-		return displayInfo[state];
+	StateDisplayInfo *getDisplayInfoObj (string state) const{
+		return displayInfo.at(state);
 	}
 
 	void setSimType(string id){
 		simulationId = id;
 	}
 	
-	string getSimType(){
+	string getSimType() const{
 		return simulationId;
 	}
 	
-	PairList *getInitialList(string id){
-		return initial[id];
+	PairList *getInitialList(string id) const{
+		return initial.at(id);
 	}
 	
 	void setOutputType(OutputType type){
 		outputType = type;
 	}
 	
-	OutputType getOutputType(){
+	OutputType getOutputType() const{
 		return outputType;
 	}
 	
@@ -216,7 +216,7 @@ public:
 		outputGeneration = gen;
 	}
 	
-	int getOutputGeneration(){
+	int getOutputGeneration() const{
 		return outputGeneration;
 	}
 	
@@ -239,12 +239,16 @@ public:
 		}
 	}
 
-	char getCharforState(string s){
+	char getCharforState(string s) const{
 		return (char) displayInfo.at(s)->ascii->getInt();
 	}
 
-	virtual vector<string> getValidIdentifiers()=0;
-	virtual string getDefaultStateString()=0;
+	Triple getColorForState(string s) const{
+		return *(displayInfo.at(s)->color);
+	}
+
+	virtual vector<string> getValidIdentifiers() const=0;
+	virtual string getDefaultStateString() const=0;
 };
 
 class LifeSimOptions : public SimOptions{
@@ -255,13 +259,13 @@ public:
 		initial.emplace("Alive", new PairList());
 		initial.emplace("Dead", new PairList());
 	}
-	virtual vector<string> getValidIdentifiers(){
+	virtual vector<string> getValidIdentifiers() const{
 		vector<string> result;
 		result.push_back("Alive");
 		result.push_back("Dead");
 		return result;
 	}
-	virtual string getDefaultStateString(){
+	virtual string getDefaultStateString() const{
 		return "Dead";
 	}
 };

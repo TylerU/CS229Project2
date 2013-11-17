@@ -1,10 +1,11 @@
 #include "Grid.h"
 
 
-Grid::Grid(Range gXRange, Range gYRange, SimOptions *opts){
+Grid::Grid(const SimOptions *opts){
 	state = new map<string, PairList *>();
-	xRange = gXRange;
-	yRange = gYRange;
+	xRange = opts->terrainX;
+	yRange = opts->terrainY;
+	buffering = false;
 	defaultState = opts->getDefaultStateString();
 	vector<string> ids = opts->getValidIdentifiers();
 	for(int i = 0; i < ids.size(); i++){
@@ -18,7 +19,7 @@ void Grid::addStartState(string id, PairList *list){
 	PairList *myList = new PairList();
 	state->emplace(id, myList);
 	
-	vector<Pair> *pairList = list->getPairVector();
+	const vector<Pair> *pairList = list->getPairVector();
 	for(int i = 0; i < pairList->size(); i++){
 		Pair his = pairList->at(i);
 		addToState(his, id);
@@ -42,9 +43,14 @@ string Grid::getStateOfCoord(int x, int y){
 
 
 void Grid::setStateOfCoord(int x, int y, string s){
-	removeFromAllStates(Pair(x,y));
-	if(s != defaultState){
-		addToState(Pair(x,y), s);
+	if(!buffering){
+		removeFromAllStates(Pair(x,y));
+		if(s != defaultState){
+			addToState(Pair(x,y), s);
+		}
+	}
+	else{
+		curChangeBuffer.push_back(PointSetBuffer(Pair(x,y), s));
 	}
 }
 
@@ -96,6 +102,21 @@ Range Grid::getXRange(){
 //Returns a shallow copy
 Range Grid::getYRange(){
 	return yRange;
+}
+
+
+void Grid::startChangeBuffering(){
+	buffering = true;
+	curChangeBuffer.clear();
+}
+
+void Grid::applyChangeBuffer(){
+	buffering = false;
+	for(int i = 0; i < curChangeBuffer.size(); i++){
+		PointSetBuffer b = curChangeBuffer.at(i);
+		setStateOfCoord(b.coord.getFirst(), b.coord.getSecond(), b.id);
+	}
+	curChangeBuffer.clear();
 }
 
 Grid::~Grid(){

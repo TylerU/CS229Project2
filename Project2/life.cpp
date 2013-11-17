@@ -2,32 +2,9 @@
 #include "FileParsing.h"
 #include "ArgumentParsing.h"
 #include "Grid.h"
+#include "SimController.h"
+#include "LifeView.h"
 
-
-bool ensureCorrect(SimOptions *opts){
-	if(	opts->name.getString() != "Figure 3 example" || 
-		opts->terrainX.getHigh() != 6 ||
-		opts->terrainX.getLow() != -6 ||
-		opts->terrainY.getHigh() != 3 ||
-		opts->terrainY.getLow() != -3 ||
-		opts->getDisplayInfoObj("Alive")->ascii->getInt() != 64 ||
-		opts->getDisplayInfoObj("Alive")->color->getFirst() != 255 ||
-		opts->getDisplayInfoObj("Alive")->color->getSecond() != 255 ||
-		opts->getDisplayInfoObj("Alive")->color->getThird() != 255 ||
-		opts->getDisplayInfoObj("Dead")->ascii->getInt() != 126 ||
-		opts->getDisplayInfoObj("Dead")->color->getFirst() != 64 ||
-		opts->getDisplayInfoObj("Dead")->color->getSecond() != 64 ||
-		opts->getDisplayInfoObj("Dead")->color->getThird() != 64 //||
-		/*opts->getInitialList("Alive")->getPairVector()[0].getFirst() != -2 ||
-		opts->getInitialList("Alive")->getPairVector()[0].getSecond() != 1 ||
-		opts->getInitialList("Alive")->getPairVector()[5].getFirst() != 4 ||
-		opts->getInitialList("Alive")->getPairVector()[5].getSecond() != -1 ||
-		opts->getInitialList("Dead")->getPairVector().size() != 0 */
-	){
-		return false;
-	}
-	return true;
-}
 
 int main(int argc, char* argv[]){
 	try{
@@ -45,13 +22,16 @@ int main(int argc, char* argv[]){
 		ap.parse();
 		options->resolveDefaults();
 
-		Grid g(options->terrainX, options->terrainY, options);
-		for(int y = options->windowY.getLow(); y <= options->windowY.getHigh(); y++){
-			for(int x = options->windowX.getLow(); x <= options->windowX.getHigh(); x++){
-				printf("%c", options->getCharforState(g.getStateOfCoord(x,y)));
-			}
-			printf("\n");
+		SimController sc(options, new LifeSimRunner());
+		sc.simGenerations(options->getOutputGeneration());
+		BasicCmdLineView *view = NULL;
+		if(options->getOutputType() == FILEOUT){
+			view = new FileFormatOutput(options, &sc);
 		}
+		else {
+			view = new VisualOutput(options, &sc);
+		}
+		view->writeout(stdout);
 	}catch (runtime_error e){
 		fprintf(stderr, "Error encountered: %s\n", e.what());
 	}

@@ -24,7 +24,7 @@ void ArgumentParser::getAndStoreRangeArg(Range *target){
 void ArgumentParser::handleArg(){
 	string thisArg(*(argv+curArg));
 	if(thisArg == "-f"){
-		opts->setOutputType(FileOutput);
+		opts->setOutputType(FILEOUT);
 	}
 	else if(thisArg == "-g"){
 		curArg++;
@@ -41,7 +41,7 @@ void ArgumentParser::handleArg(){
 		opts->showOnlyHelpScreen();
 	}
 	else if(thisArg == "-v"){
-		opts->setOutputType(VisualOutput);
+		opts->setOutputType(VISUALOUT);
 	}
 	else if(thisArg == "-wx"){
 		getAndStoreRangeArg(&opts->windowX);

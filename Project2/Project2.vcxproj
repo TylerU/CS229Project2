@@ -66,12 +66,16 @@
     <ClCompile Include="FileParsing.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="life.cpp" />
+    <ClCompile Include="LifeView.cpp" />
+    <ClCompile Include="SimController.cpp" />
     <ClCompile Include="SimOptions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArgumentParsing.h" />
     <ClInclude Include="FileParsing.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="LifeView.h" />
+    <ClInclude Include="SimController.h" />
     <ClInclude Include="SimOptions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

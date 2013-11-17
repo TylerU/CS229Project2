@@ -1,3 +1,5 @@
+#ifndef ARGPARSER_H
+#define ARGPARSER_H
 #include "SimOptions.h"
 
 class ArgumentParser{
@@ -20,3 +22,4 @@ public:
 class LifeArgumentParser : public ArgumentParser{
 
 };
+#endif

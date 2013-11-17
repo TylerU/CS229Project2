@@ -1,8 +1,17 @@
+#ifndef GRID_H
+#define GRID_H
 #include <string>
 #include <map>
 #include "SimOptions.h"
 
 using namespace std;
+
+class PointSetBuffer{
+public:
+	PointSetBuffer(Pair c, string s) : coord(c.getFirst(), c.getSecond()), id(s) {}
+	Pair coord;
+	string id;
+};
 
 class Grid{
 protected:
@@ -10,13 +19,15 @@ protected:
 	string defaultState;
 	Range xRange;
 	Range yRange;
+	vector<PointSetBuffer> curChangeBuffer;
+	bool buffering;
 protected:
 	void removeFromAllStates(Pair p);
 	void addToState(string state, Pair p);
 	void addStartState(string id, PairList *list);
 	void addToState(Pair p, string s);
 public:
-	Grid(Range xRange, Range yRange, SimOptions *opts);
+	Grid(const SimOptions *opts);
 	virtual string getStateOfCoord(int x, int y);
 	virtual const PairList const* getPairListForState(string state);
 	virtual void setStateOfCoord(int x, int y, string s);
@@ -24,5 +35,8 @@ public:
 	void setYRange(Range r);
 	Range getXRange();
 	Range getYRange();
+	void startChangeBuffering();
+	void applyChangeBuffer();
 	virtual ~Grid();
 };
+#endif
