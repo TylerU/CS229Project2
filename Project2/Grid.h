@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include "SimOptions.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -27,9 +28,9 @@ protected:
 	void addStartState(string id, PairList *list);
 	void addToState(Pair p, string s);
 public:
-	Grid(const SimOptions *opts);
+	Grid(SimOptions *opts);
 	virtual string getStateOfCoord(int x, int y);
-	virtual const PairList const* getPairListForState(string state);
+	virtual PairList * getPairListForState(string state);
 	virtual void setStateOfCoord(int x, int y, string s);
 	void setXRange(Range r);
 	void setYRange(Range r);

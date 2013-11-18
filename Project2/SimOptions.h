@@ -4,6 +4,7 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <stdexcept>
 
 using namespace std;
 
@@ -104,7 +105,7 @@ public:
 		pairs.push_back(Pair(f,s));
 	}
 	//Too lazy to write more getters.
-	const vector<Pair> const *getPairVector() const{
+	const vector<Pair> *getPairVector() const{
 		return &pairs;
 	}
 	bool contains(Pair p){
@@ -188,8 +189,8 @@ public:
 		showHelp = false;
 	}
 
-	StateDisplayInfo *getDisplayInfoObj (string state) const{
-		return displayInfo.at(state);
+	StateDisplayInfo *getDisplayInfoObj (string state) {
+		return displayInfo[state];
 	}
 
 	void setSimType(string id){
@@ -200,8 +201,8 @@ public:
 		return simulationId;
 	}
 	
-	PairList *getInitialList(string id) const{
-		return initial.at(id);
+	PairList *getInitialList(string id) {
+		return initial[id];
 	}
 	
 	void setOutputType(OutputType type){
@@ -243,12 +244,12 @@ public:
 		}
 	}
 
-	char getCharforState(string s) const{
-		return (char) displayInfo.at(s)->ascii->getInt();
+	char getCharforState(string s) {
+		return (char) displayInfo[s]->ascii->getInt();
 	}
 
-	Triple getColorForState(string s) const{
-		return *(displayInfo.at(s)->color);
+	Triple getColorForState(string s) {
+		return *(displayInfo[s]->color);
 	}
 
 	virtual vector<string> getValidIdentifiers() const=0;
@@ -258,10 +259,10 @@ public:
 class LifeSimOptions : public SimOptions{
 public:
 	LifeSimOptions(){
-		displayInfo.emplace("Alive", new StateDisplayInfo('@', 0,0,0));
-		displayInfo.emplace("Dead", new StateDisplayInfo('-', 255,255,255));
-		initial.emplace("Alive", new PairList());
-		initial.emplace("Dead", new PairList());
+		displayInfo.insert(pair<string, StateDisplayInfo*>("Alive", new StateDisplayInfo('@', 0,0,0)));
+		displayInfo.insert(pair<string, StateDisplayInfo *>("Dead", new StateDisplayInfo('-', 255,255,255)));
+		initial.insert(pair<string, PairList *>("Alive", new PairList()));
+		initial.insert(pair<string, PairList *>("Dead", new PairList()));
 	}
 	virtual vector<string> getValidIdentifiers() const{
 		vector<string> result;

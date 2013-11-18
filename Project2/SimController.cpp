@@ -48,7 +48,7 @@ void LifeSimRunner::runOnPoint(Grid* grid, int x, int y){
 	}
 }
 
-const PairList const* SimController::getPairListForState(string strstate){
+const PairList * SimController::getPairListForState(string strstate){
 	return grid->getPairListForState(strstate);
 }
 
@@ -59,7 +59,7 @@ void SimController::simGeneration(){
 	grid->applyChangeBuffer();
 }
 
-SimController::SimController(const SimOptions *options, SimRunner *sim){
+SimController::SimController(SimOptions *options, SimRunner *sim){
 	mySim = sim;
 	gen = 0;
 	opts = options;

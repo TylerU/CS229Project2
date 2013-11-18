@@ -1,7 +1,7 @@
 #include "Grid.h"
+using namespace std;
 
-
-Grid::Grid(const SimOptions *opts){
+Grid::Grid(SimOptions *opts){
 	state = new map<string, PairList *>();
 	xRange = opts->terrainX;
 	yRange = opts->terrainY;
@@ -17,7 +17,7 @@ Grid::Grid(const SimOptions *opts){
 
 void Grid::addStartState(string id, PairList *list){
 	PairList *myList = new PairList();
-	state->emplace(id, myList);
+	state->insert(pair<string, PairList*>(id, myList));
 	
 	const vector<Pair> *pairList = list->getPairVector();
 	for(int i = 0; i < pairList->size(); i++){
@@ -57,7 +57,8 @@ void Grid::setStateOfCoord(int x, int y, string s){
 void Grid::addToState(Pair coord, string s){
 	try{
 		if(coord.getFirst() <= xRange.getHigh() && coord.getFirst() >= xRange.getLow() && coord.getSecond() <= yRange.getHigh() && coord.getSecond() >= yRange.getLow()){
-			state->at(s)->addPair(coord.getFirst(), coord.getSecond());
+			PairList *p = (*state)[s];
+			p->addPair(coord.getFirst(), coord.getSecond());
 		}
 		else{
 			//Ignore entries outside our terrain range
@@ -77,9 +78,9 @@ void Grid::removeFromAllStates(Pair coord){
 	}
 }
 
-const PairList const* Grid::getPairListForState(string statestr){
+PairList * Grid::getPairListForState(string statestr){
 	try{
-		return state->at(statestr);
+		return (*state)[statestr];
 	}
 	catch(...){
 		throw new runtime_error("Requested pair list for an invalid state. Silly.");

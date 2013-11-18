@@ -28,13 +28,13 @@ void ParserCreator::addParserOptions(){
 	RangeElementParser *windowYParser = new RangeElementParser(&opts->windowY);
 	
 	map<string, ElementParser*> *terrainStruct = new map<string, ElementParser*>();
-	terrainStruct->emplace("Xrange", terrainXParser);
-	terrainStruct->emplace("Yrange", terrainYParser);
+	terrainStruct->insert(pair<string, ElementParser*>("Xrange", terrainXParser));
+	terrainStruct->insert(pair<string, ElementParser*>("Yrange", terrainYParser));
 	StructElementParser *terrainParser = new StructElementParser(terrainStruct);
 
 	map<string, ElementParser*> *windowStruct = new map<string, ElementParser*>();
-	windowStruct->emplace("Xrange", windowXParser);
-	windowStruct->emplace("Yrange", windowYParser);
+	windowStruct->insert(pair<string, ElementParser*>("Xrange", windowXParser));
+	windowStruct->insert(pair<string, ElementParser*>("Yrange", windowYParser));
 	StructElementParser *windowParser = new StructElementParser(windowStruct);
 
 
@@ -42,29 +42,29 @@ void ParserCreator::addParserOptions(){
 	map<string, ElementParser*> *charsStruct = new map<string, ElementParser*>();
 	vector<string> validIds = opts->getValidIdentifiers();
 	for(int i = 0; i < validIds.size(); i++){
-			charsStruct->emplace(validIds[i], new IntElementParser(opts->getDisplayInfoObj(validIds[i])->ascii));
+			charsStruct->insert(pair<string, ElementParser*>(validIds[i], new IntElementParser(opts->getDisplayInfoObj(validIds[i])->ascii)));
 	}
 	StructElementParser *charsParser = new StructElementParser(charsStruct);
 
 	map<string, ElementParser*> *colorsStruct = new map<string, ElementParser*>();
 	for(int i = 0; i < validIds.size(); i++){
-			colorsStruct->emplace(validIds[i], new TripleElementParser(opts->getDisplayInfoObj(validIds[i])->color));
+			colorsStruct->insert(pair<string, ElementParser*>(validIds[i], new TripleElementParser(opts->getDisplayInfoObj(validIds[i])->color)));
 	}
 	StructElementParser *colorsParser = new StructElementParser(colorsStruct);
 
 	map<string, ElementParser*> *initialStruct = new map<string, ElementParser*>();
 	for(int i = 0; i < validIds.size(); i++){
-		initialStruct->emplace(validIds[i], new PairsElementParser(opts->getInitialList(validIds[i])));
+		initialStruct->insert(pair<string, ElementParser*>(validIds[i], new PairsElementParser(opts->getInitialList(validIds[i]))));
 	}
 	StructElementParser *initialParser = new StructElementParser(initialStruct);
 
 	map<string, ElementParser*> *mainStruct = new map<string, ElementParser*>();
-	mainStruct->emplace("Name", nameParser);
-	mainStruct->emplace("Terrain", terrainParser);
-	mainStruct->emplace("Window", windowParser);
-	mainStruct->emplace("Chars", charsParser);
-	mainStruct->emplace("Colors", colorsParser);
-	mainStruct->emplace("Initial", initialParser);
+	mainStruct->insert(pair<string, ElementParser*>("Name", nameParser));
+	mainStruct->insert(pair<string, ElementParser*>("Terrain", terrainParser));
+	mainStruct->insert(pair<string, ElementParser*>("Window", windowParser));
+	mainStruct->insert(pair<string, ElementParser*>("Chars", charsParser));
+	mainStruct->insert(pair<string, ElementParser*>("Colors", colorsParser));
+	mainStruct->insert(pair<string, ElementParser*>("Initial", initialParser));
 
 	parser = new StructElementParser(mainStruct);
 }
@@ -158,7 +158,7 @@ ElementParser *StructElementParser::getElement(string key){
 		return it->second;
 	}
 	else{
-		return false;
+		return NULL;
 	}
 }
 
@@ -182,8 +182,8 @@ vector<int> PairsElementParser::getSinglePair(){
 	return vec;
 }
 
-vector<vector<int>> PairsElementParser::getPairs(){
-	vector<vector<int>> vec;
+vector< vector<int> > PairsElementParser::getPairs(){
+	vector< vector<int> > vec;
 	consumeCommentsAndWhitespace();
 	char nextDelim = 0;
 	while(nextDelim == 0 || (nextDelim = fgetc(in)) == ','){
@@ -202,7 +202,7 @@ vector<vector<int>> PairsElementParser::getPairs(){
 
 void PairsElementParser::read(FILE* inf){
 	setInFile(inf);
-	vector<vector<int>> pairs = getPairs();
+	vector< vector<int> > pairs = getPairs();
 	for(int i = 0; i < pairs.size(); i++){
 		dest->addPair(pairs[i][0], pairs[i][1]);
 	}

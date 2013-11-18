@@ -1,6 +1,7 @@
 #ifndef ARGPARSER_H
 #define ARGPARSER_H
 #include "SimOptions.h"
+#include <stdexcept>
 
 class ArgumentParser{
 protected:

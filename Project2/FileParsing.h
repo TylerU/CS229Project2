@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <map>
+#include <stdexcept>
 
 using namespace std;
 
@@ -90,14 +91,14 @@ protected:
 public:
 	VectorElementParser(): ElementParser(){
 	}
-	virtual virtual void read(FILE *inf) =0;
+	virtual void read(FILE *inf) =0;
 };
 
 class PairsElementParser : public VectorElementParser{
 private:
 	PairList *dest;
 private:
-	vector<vector<int>> getPairs();
+	vector< vector<int> > getPairs();
 	vector<int> getSinglePair();
 public:
 	PairsElementParser(PairList *destination): VectorElementParser(){
@@ -129,7 +130,7 @@ public:
 	}
 	ElementParser* getElement(string key);
 	void addParserKeyword(string key, ElementParser *parser){
-		elements->emplace(key, parser);
+		elements->insert(pair<string, ElementParser*>(key, parser));
 	}
 	virtual void read(FILE *inf);
 	virtual ~StructElementParser(){

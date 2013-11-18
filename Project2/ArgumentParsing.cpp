@@ -1,5 +1,5 @@
 #include "ArgumentParsing.h"
-
+#include <stdio.h>
 
 int ArgumentParser::getCurIntArg(){
 	int i;

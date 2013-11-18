@@ -1,25 +1,20 @@
-﻿Build started 11/17/2013 10:44:26 PM.
-     1>Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Project2\Project2.vcxproj" on node 2 (Build target(s)).
+﻿Build started 11/17/2013 11:29:28 PM.
+     1>Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Project2\Project2.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt SimController.cpp
-         SimController.cpp
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\simoptions.h(107): warning C4114: same type qualifier used more than once
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\simoptions.h(111): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\simoptions.h(119): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\grid.h(32): warning C4114: same type qualifier used more than once
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\simcontroller.h(34): warning C4114: same type qualifier used more than once
-     1>c:\users\tauhl_000\documents\visual studio 2012\projects\project2\project2\simcontroller.cpp(51): warning C4114: same type qualifier used more than once
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt life_gui.cpp
+         life_gui.cpp
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.lib" /MACHINE:X86 Debug\ArgumentParsing.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Debug\Project2.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Debug\Project2.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Debug\Project2.lib" /MACHINE:X86 Debug\ArgumentParsing.obj
          Debug\FileParsing.obj
          Debug\Grid.obj
          Debug\life.obj
+         Debug\life_gui.obj
          Debug\LifeView.obj
          Debug\SimController.obj
          Debug\SimOptions.obj
-         Project2.vcxproj -> C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Debug\Project2.exe
-     1>Done Building Project "C:\Users\tauhl_000\documents\visual studio 2012\Projects\Project2\Project2\Project2.vcxproj" (Build target(s)).
+         Project2.vcxproj -> C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Debug\Project2.exe
+     1>Done Building Project "C:\Users\tauhl_000\Documents\Visual Studio 2012\Projects\Project2\Project2\Project2.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.22
+Time Elapsed 00:00:01.18

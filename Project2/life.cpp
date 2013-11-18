@@ -45,6 +45,6 @@ int main(int argc, char* argv[]){
 		fprintf(stderr, "Error encountered: %s\n", e.what());
 	}
 
-	system("pause");
+	//system("pause");
 	return 0;
 }

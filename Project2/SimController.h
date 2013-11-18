@@ -2,6 +2,7 @@
 #define SIMCONTROLLER_H
 #include "SimOptions.h"
 #include "Grid.h"
+#include <stdexcept>
 
 using namespace std;
 
@@ -28,10 +29,10 @@ protected:
 protected:
 	void simGeneration();
 public:
-	SimController(const SimOptions *options, SimRunner *sim);
+	SimController(SimOptions *options, SimRunner *sim);
 	virtual string getStateOfCoord(int x, int y);
 	virtual void simGenerations(int g);
-	virtual const PairList const* getPairListForState(string state);
+	virtual const PairList * getPairListForState(string state);
 	inline int getCurGeneration() { return gen; }
 	virtual ~SimController();
 };

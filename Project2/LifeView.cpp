@@ -10,8 +10,8 @@ void write_file_to_file(FILE *src, FILE *dest){
 	}
 }
 
-void append_file_to_file(char src[], FILE *dest_file){
-	FILE *source_file = fopen(src, "r");
+void append_file_to_file(string src, FILE *dest_file){
+	FILE *source_file = fopen(src.c_str(), "r");
 	write_file_to_file(source_file, dest_file);
 }
 
@@ -66,5 +66,5 @@ void FileFormatOutput::writeout(FILE* out){
 }
 
 void LifeHelpOutput::writeout(FILE *out){
-	append_file_to_file("LifeHelp.txt", out);
+	append_file_to_file(string("LifeHelp.txt"), out);
 }
