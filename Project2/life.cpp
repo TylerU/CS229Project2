@@ -6,6 +6,20 @@
 #include "LifeView.h"
 
 
+BasicCmdLineView *getView(SimOptions *options, SimController *sc){
+	if(!options->getShowHelp()){
+		if(options->getOutputType() == FILEOUT){
+			return new FileFormatOutput(options, sc);
+		}
+		else {
+			return new VisualOutput(options, sc);
+		}
+	}
+	else{
+		return new LifeHelpOutput(options, sc);
+	}
+}
+
 int main(int argc, char* argv[]){
 	try{
 		SimOptions *options = NULL;
@@ -24,13 +38,8 @@ int main(int argc, char* argv[]){
 
 		SimController sc(options, new LifeSimRunner());
 		sc.simGenerations(options->getOutputGeneration());
-		BasicCmdLineView *view = NULL;
-		if(options->getOutputType() == FILEOUT){
-			view = new FileFormatOutput(options, &sc);
-		}
-		else {
-			view = new VisualOutput(options, &sc);
-		}
+		BasicCmdLineView *view = getView(options, &sc);
+
 		view->writeout(stdout);
 	}catch (runtime_error e){
 		fprintf(stderr, "Error encountered: %s\n", e.what());

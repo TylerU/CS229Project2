@@ -11,6 +11,7 @@ protected:
 	int getCurIntArg();
 	Range getCurRangeArg();
 	void getAndStoreRangeArg(Range *target);
+	string getCurArg();
 	virtual void handleArg();
 public:
 	ArgumentParser(int _argc, char *_argv[]);
@@ -19,7 +20,12 @@ public:
 	string getFileNameOrEmptyString();
 };
 
-class LifeArgumentParser : public ArgumentParser{
+class LifeGUIArgumentParser : public ArgumentParser{
+protected:
+	virtual void handleArg();
+	LifeGUISimOptions *getSimOptions();
+public:
+	LifeGUIArgumentParser(int _argc, char *_argv[]) : ArgumentParser(_argc, _argv) {}
 
 };
 #endif

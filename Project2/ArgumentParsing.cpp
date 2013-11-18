@@ -21,8 +21,14 @@ void ArgumentParser::getAndStoreRangeArg(Range *target){
 	target->setHigh(res.getHigh());
 	target->setLow(res.getLow());
 }
-void ArgumentParser::handleArg(){
+
+string ArgumentParser::getCurArg(){
 	string thisArg(*(argv+curArg));
+	return thisArg;
+}
+
+void ArgumentParser::handleArg(){
+	string thisArg = getCurArg();
 	if(thisArg == "-f"){
 		opts->setOutputType(FILEOUT);
 	}
@@ -94,5 +100,21 @@ string ArgumentParser::getFileNameOrEmptyString(){
 	}
 	else{
 		return string("");
+	}
+}
+
+LifeGUISimOptions *LifeGUIArgumentParser::getSimOptions(){
+	return (LifeGUISimOptions *)opts;
+}
+
+void LifeGUIArgumentParser::handleArg(){
+	string thisArg = getCurArg();
+	if(thisArg == "-s"){
+		curArg++;
+		int size = getCurIntArg();
+		getSimOptions()->setBlockSize(size);
+	}
+	else{
+		ArgumentParser::handleArg();
 	}
 }

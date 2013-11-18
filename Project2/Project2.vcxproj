@@ -66,6 +66,7 @@
     <ClCompile Include="FileParsing.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="life.cpp" />
+    <ClCompile Include="life_gui.cpp" />
     <ClCompile Include="LifeView.cpp" />
     <ClCompile Include="SimController.cpp" />
     <ClCompile Include="SimOptions.cpp" />

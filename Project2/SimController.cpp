@@ -54,7 +54,9 @@ const PairList const* SimController::getPairListForState(string strstate){
 
 void SimController::simGeneration(){
 	gen++;
+	grid->startChangeBuffering();
 	mySim->run(grid);
+	grid->applyChangeBuffer();
 }
 
 SimController::SimController(const SimOptions *options, SimRunner *sim){
@@ -69,11 +71,9 @@ string SimController::getStateOfCoord(int x, int y){
 }
 
 void SimController::simGenerations(int g){
-	grid->startChangeBuffering();
 	for(int i = 0; i < g; i++){
 		simGeneration();
 	}
-	grid->applyChangeBuffer();
 }
 
 SimController::~SimController(){

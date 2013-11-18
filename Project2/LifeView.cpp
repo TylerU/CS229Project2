@@ -1,6 +1,21 @@
 #include "LifeView.h"
 #include <string>
 
+void write_file_to_file(FILE *src, FILE *dest){
+	if(src != NULL && dest != NULL){
+		char c;
+		while( (c=fgetc(src)) != EOF){
+			fputc(c, dest);
+		}
+	}
+}
+
+void append_file_to_file(char src[], FILE *dest_file){
+	FILE *source_file = fopen(src, "r");
+	write_file_to_file(source_file, dest_file);
+}
+
+
 BasicCmdLineView::BasicCmdLineView(SimOptions *options, SimController *contr){
 	opts = options;
 	controller = contr;
@@ -48,4 +63,8 @@ void FileFormatOutput::writeout(FILE* out){
 	}
 	fprintf(out, "\t};\n");
 	fprintf(out, "};\n");
+}
+
+void LifeHelpOutput::writeout(FILE *out){
+	append_file_to_file("LifeHelp.txt", out);
 }

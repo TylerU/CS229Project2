@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments> &lt; lifeIn1.txt -f</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>LifeIn1.txt </LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

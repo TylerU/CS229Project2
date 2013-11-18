@@ -1,0 +1,20 @@
+life
+
+This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of GoL specified as a command line argument. 
+
+Valid command line arguments (override anything specified in the file format):
+-f			Output should be in the same file format as Appendix A.
+
+-g n		Specify the desired generation number. If omitted, the default should be n = 0.
+
+-h			Display a help screen that describes the program.
+
+-tx l..h	Set the x range of the terrain; overrides values specified in the input file. Default is 0..0
+
+-ty l..h	Set the y range of the terrain; overrides values specified in the input file. Default is 0..0
+
+-v			Output should be visual: an ASCII display of the terrain with appropriate characters for the dead and alive cells. In Figure 4, the dead character is ~" and the alive character is @". This is the default output format.
+
+-wx l..h	Set the x range of the output window; otherwise this defaults to the x range of the terrain.
+
+-wy l..h	Set the y range of the output window; otherwise this defaults to the y range of the terrain.

@@ -3,6 +3,10 @@
 #include "SimController.h"
 #include "SimOptions.h"
 
+void write_file_to_file(FILE *src, FILE *dest);
+
+void append_file_to_file(char src[], FILE *dest_file);
+
 class BasicCmdLineView{
 protected:
 	SimOptions *opts;
@@ -22,6 +26,13 @@ public:
 class VisualOutput : public BasicCmdLineView{
 public:
 	VisualOutput(SimOptions *options, SimController *contr) : BasicCmdLineView(options, contr) {}
+
+	virtual void writeout(FILE* out);
+};
+
+class LifeHelpOutput : public BasicCmdLineView{
+public:
+	LifeHelpOutput(SimOptions *options, SimController *contr) : BasicCmdLineView(options, contr) {}
 
 	virtual void writeout(FILE* out);
 };

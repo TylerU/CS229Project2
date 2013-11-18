@@ -224,6 +224,10 @@ public:
 		showHelp = true;
 	}
 
+	bool getShowHelp(){
+		return showHelp;
+	}
+
 	/*
 		Set any defaults that are reliant upon other values being set. Namely, the window ranges.
 		This is called after ALL argument setting is done. 
@@ -268,5 +272,16 @@ public:
 	virtual string getDefaultStateString() const{
 		return "Dead";
 	}
+};
+
+class LifeGUISimOptions : public LifeSimOptions{
+protected:
+	int blockSize;
+public:
+	LifeGUISimOptions() : LifeSimOptions(){
+		blockSize = 10;
+	}
+	int getBlockSize(){ return blockSize; }
+	void setBlockSize(int s) { blockSize = s; }
 };
 #endif
