@@ -37,11 +37,18 @@ int main( int argc, char **argv )
 		sc->simGenerations(options->getOutputGeneration());
 	}catch (runtime_error e){
 		fprintf(stderr, "Error encountered: %s\n", e.what());
+		return 1;
 	}
 	
-	LifeDrawingWidget myWidget(options, sc);
-	myWidget.setWindowTitle(QString(options->name.getString().c_str()));
-	myWidget.show();
+	if(options->getShowHelp()){
+		append_file_to_file("LifeGuiHelp.txt", stdout);
+		return 0;
+	}
+	else{
+		LifeDrawingWidget myWidget(options, sc);
+		myWidget.setWindowTitle(QString(options->name.getString().c_str()));
+		myWidget.show();
 
-	return app.exec();
+		return app.exec();
+	}
 }
