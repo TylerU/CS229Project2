@@ -17,7 +17,7 @@ int main( int argc, char **argv )
  
 	
 	LifeGUISimOptions *options = NULL;
-	SimController *controller = NULL;
+	SimController *sc = NULL;
 	try{
 		LifeGUIArgumentParser ap(argc, argv);
 		FileParser fp(ap.getFileNameOrEmptyString());
@@ -32,13 +32,13 @@ int main( int argc, char **argv )
 		ap.parse();
 		options->resolveDefaults();
 
-		controller = SimController(options, new LifeSimRunner());
+		sc = new SimController(options, new LifeSimRunner());
 		sc->simGenerations(options->getOutputGeneration());
 	}catch (runtime_error e){
 		fprintf(stderr, "Error encountered: %s\n", e.what());
 	}
 	
-	LifeDrawingWidget myWidget(options, &sc);
+	LifeDrawingWidget myWidget(options, sc);
 
 	myWidget.show();
 

@@ -20,7 +20,7 @@ BasicCmdLineView *getView(SimOptions *options, SimController *sc){
 	}
 }
 
-int main(int argc, char* argv[]){
+/*int main(int argc, char* argv[]){
 	try{
 		SimOptions *options = NULL;
 		ArgumentParser ap(argc, argv);
@@ -47,4 +47,4 @@ int main(int argc, char* argv[]){
 
 	//system("pause");
 	return 0;
-}
+}*/
