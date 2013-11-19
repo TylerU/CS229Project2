@@ -284,5 +284,6 @@ public:
 	}
 	int getBlockSize(){ return blockSize; }
 	void setBlockSize(int s) { blockSize = s; }
+	bool drawLines(){ return blockSize >= 4; }
 };
 #endif

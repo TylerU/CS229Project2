@@ -4,7 +4,7 @@
 #include "Grid.h"
 #include "SimController.h"
 #include "LifeView.h"
-
+#include <stdexcept>
 
 BasicCmdLineView *getView(SimOptions *options, SimController *sc){
 	if(!options->getShowHelp()){
