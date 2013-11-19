@@ -31,13 +31,13 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
 				painter.drawLine(0, j * opts->getBlockSize(), width, j*opts->getBlockSize());
 		}
 
-		/*for (int i = 0; i < image.width(); ++i) {
-			for (int j = 0; j < image.height(); ++j) {
-				QRect rect = pixelRect(i, j);
-				if (!event->region().intersect(rect).isEmpty()) {
-					QColor color = QColor::fromRgba(image.pixel(i, j));
-					painter.fillRect(rect, color);
-				}
-			}
-		}*/
+	for(int y = opts->windowY.getLow(); y <= opts->windowY.getHigh(); y++){
+		for(int x = opts->windowX.getLow(); x <= opts->windowX.getHigh(); x++){
+			Triple color = opts->getColorForState(controller->getStateOfCoord(x,y));
+			QRect rect(x * opts->getBlockSize(), y * opts->getBlockSize(), opts->getBlockSize(), opts->getBlockSize()); 
+			QColor color = QColor::fromRgba(color.getFirst(), color.getSecond(), color.getThird(), 255);
+			painter.fillRect(rect, color);
+		}
+	}
+
 }
