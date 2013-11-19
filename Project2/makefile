@@ -5,7 +5,7 @@ clean:
 
 tarball: proj2.tar.gz
 
-proj2.tar.gz:
+proj2.tar.gz: makefile README LifeHelp.txt LifeGuiHelp.txt ArgumentParsing.cpp ArgumentParsing.h FileParsing.cpp FileParsing.h Grid.cpp Grid.h life.cpp life_gui.cpp LifeDrawingWidget.cpp LifeDrawingWidget.h LifeView.cpp LifeView.h SimController.cpp SimController.h SimOptions.cpp SimOptions.h 
 	tar -czf proj2.tar.gz makefile README LifeHelp.txt LifeGuiHelp.txt ArgumentParsing.cpp ArgumentParsing.h FileParsing.cpp FileParsing.h Grid.cpp Grid.h life.cpp life_gui.cpp LifeDrawingWidget.cpp LifeDrawingWidget.h LifeView.cpp LifeView.h SimController.cpp SimController.h SimOptions.cpp SimOptions.h 
 
 #These dependencies are weird. I need it to know when to update, but I can't just say life_gui.o and LifeDrawingWidget.o
