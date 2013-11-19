@@ -1,1 +1,21 @@
-This is a test thingy
+life_gui - Usage
+
+This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of GoL specified as a command line argument. 
+
+After simulating the specified number of generations, this program creates a qt window and creates a visual display of the game state based on some parameters and the settings in the input file. 
+
+-g n Specify the desired generation number. If omitted, the default is n = 0.
+
+-h Display a help screen that describes the program, and terminate before starting the GUI.
+
+-s n Specify the size, in pixels, of each square in the grid (default is 10). Grid lines are omitted when the size is less than 4.
+
+-tx l..h Set the x range of the terrain; overrides values specified in the input file.
+
+-ty l..h Set the y range of the terrain; overrides values specified in the input file.
+
+-wx l..h Set the (initial) x range of the output window (default is terrain x range).
+
+-wy l..h Set the (initial) y range of the output window (default is terrain y range).
+
+Like life, -v and -f are accepted as valid arguments, but they are ignored. 

@@ -1,14 +1,15 @@
 all: life_gui life
 
 clean:
-	rm -f life life_gui life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o
+	rm -f life life_gui life.o life_gui.o LifeDrawingWidget.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o
 
 tarball: proj2.tar.gz
 
-proj2.tar.gz: makefile README 
-	tar -czf proj2.tar.gz makefile README LifeHelp.txt
+proj2.tar.gz:
+	tar -czf proj2.tar.gz makefile README LifeHelp.txt LifeGuiHelp.txt ArgumentParsing.cpp ArgumentParsing.h FileParsing.cpp FileParsing.h Grid.cpp Grid.h life.cpp life_gui.cpp LifeDrawingWidget.cpp LifeDrawingWidget.h LifeView.cpp LifeView.h SimController.cpp SimController.h SimOptions.cpp SimOptions.h 
 
-life_gui: life_gui.cpp LifeDrawingWidget.cpp ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
+#These dependencies are weird. I need it to know when to update, but I can't just say life_gui.o and LifeDrawingWidget.o
+life_gui: life_gui.cpp LifeDrawingWidget.h LifeDrawingWidget.cpp ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
 	qmake-qt4 -project -o life_gui.pro
 	qmake-qt4 -makefile -o gui_makefile life_gui.pro
 	sed -e 's/life.o//g' <gui_makefile >gui_makefile_fixed

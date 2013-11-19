@@ -39,6 +39,9 @@
     <ClCompile Include="life_gui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LifeDrawingWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SimOptions.h">
@@ -57,6 +60,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="LifeView.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LifeDrawingWidget.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

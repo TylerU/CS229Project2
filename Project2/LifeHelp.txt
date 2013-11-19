@@ -1,4 +1,4 @@
-life
+life - Usage
 
 This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of GoL specified as a command line argument. 
 
