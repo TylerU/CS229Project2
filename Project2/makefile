@@ -1,7 +1,7 @@
-all: life life_gui
+all: life_gui
 
 clean:
-	rm -f life life_gui life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
+	rm -f life life_gui life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o
 
 tarball: proj2.tar.gz
 
@@ -10,8 +10,8 @@ proj2.tar.gz: makefile README
 
 life_gui: 
 	qmake-qt4 -project -o life_gui.pro
-	qmake-qt4 -makefile -o gui_makefile
-	make -f gui-makefile
+	qmake-qt4 -makefile -o gui_makefile life_gui.pro
+	make -f gui_makefile
 
 life: life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
 	g++ -o life life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o

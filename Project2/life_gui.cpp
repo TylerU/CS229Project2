@@ -6,8 +6,8 @@ int main( int argc, char **argv )
 {
   QApplication app( argc, argv );
  
-  MyWidget myWidget;
+  LifeDrawingWidget myWidget;
   myWidget.show();
- 
+
   return app.exec();
 }

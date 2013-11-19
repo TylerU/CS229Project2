@@ -7,8 +7,8 @@
 class LifeDrawingWidget : public QWidget{
     Q_OBJECT
 public:
- //  MyWidget();
- 
+    LifeDrawingWidget(){}
+    virtual ~LifeDrawingWidget(){} 
 protected:
     void paintEvent(QPaintEvent *event);
 signals:
