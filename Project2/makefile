@@ -1,7 +1,7 @@
 all: life_gui life
 
 clean:
-	rm -f life life_gui life.o life_gui.o LifeDrawingWidget.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o
+	rm -f life life_gui life.o life_gui.o LifeDrawingWidget.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o gui_makefile gui_makefile_fixed
 
 tarball: proj2.tar.gz
 
