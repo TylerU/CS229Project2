@@ -17,10 +17,11 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
 		if(opts->drawLines()){
 			int numVerticalLines = opts->windowX.getHigh() - opts->windowX.getLow() + 1;
 			int numHorizontalLines = opts->windowY.getHigh() - opts->windowY.getLow() + 1;
-			int width  = (numVerticalLines-1) * opts->getBlockSize();
-			int height = (numHorizontalLines-1) * opts->getBlockSize();
+			int width  = (numVerticalLines) * opts->getBlockSize();
+			int height = (numHorizontalLines) * opts->getBlockSize();
 			int lineWidth = 1;
-			
+				
+			resize(width, height);			
 			QPen myPen(Qt::black, lineWidth, Qt::SolidLine);
 			painter.setPen(myPen);
 
@@ -34,9 +35,17 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
 	for(int y = opts->windowY.getLow(); y <= opts->windowY.getHigh(); y++){
 		for(int x = opts->windowX.getLow(); x <= opts->windowX.getHigh(); x++){
 			Triple color = opts->getColorForState(controller->getStateOfCoord(x,y));
-			QRect rect(x * opts->getBlockSize(), y * opts->getBlockSize(), opts->getBlockSize(), opts->getBlockSize()); 
-			QColor color = QColor::fromRgba(color.getFirst(), color.getSecond(), color.getThird(), 255);
-			painter.fillRect(rect, color);
+			int normX = x;
+			int normY = y;
+			normY -= opts->windowY.getLow();
+			normX -= opts->windowX.getLow();
+			int lineSizeOffset = 1;
+			if(!opts->drawLines()){
+				lineSizeOffset = 0;
+			}	
+			QRect rect(normX * opts->getBlockSize() + lineSizeOffset, normY * opts->getBlockSize() + lineSizeOffset, opts->getBlockSize() - lineSizeOffset, opts->getBlockSize() - lineSizeOffset); 
+			QColor useColor = QColor::fromRgb(color.getFirst(), color.getSecond(), color.getThird());
+			painter.fillRect(rect, useColor);
 		}
 	}
 

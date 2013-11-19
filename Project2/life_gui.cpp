@@ -1,5 +1,6 @@
 #include <QtGui>
 #include <QApplication>
+#include <QString>
 
 #include <stdio.h>
 #include <stdexcept>
@@ -39,7 +40,7 @@ int main( int argc, char **argv )
 	}
 	
 	LifeDrawingWidget myWidget(options, sc);
-
+	myWidget.setWindowTitle(QString(options->name.getString().c_str()));
 	myWidget.show();
 
 	return app.exec();
