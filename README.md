@@ -1,4 +1,88 @@
-CS229Project2
-=============
+CS229 Project 2 Part 1
 
-CS229Project2
+This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of GoL specified as a command line argument. 
+
+life
+
+Outputs the resulting GoL grid to stdout using the characters specified in the input file. 
+
+Valid command line arguments (override anything specified in the file format):
+-f			Output should be in the same file format as Appendix A.
+
+-g n		Specify the desired generation number. If omitted, the default should be n = 0.
+
+-h			Display a help screen that describes the program.
+
+-tx l..h	Set the x range of the terrain; overrides values specified in the input file. Default is 0..0
+
+-ty l..h	Set the y range of the terrain; overrides values specified in the input file. Default is 0..0
+
+-v			Output should be visual: an ASCII display of the terrain with appropriate characters for the dead and alive cells. In Figure 4, the dead character is ~" and the alive character is @". This is the default output format.
+
+-wx l..h	Set the x range of the output window; otherwise this defaults to the x range of the terrain.
+
+-wy l..h	Set the y range of the output window; otherwise this defaults to the y range of the terrain.
+
+
+
+life_gui
+
+After simulating the specified number of generations, this program creates a qt window and creates a visual display of the game state based on some parameters and the settings in the input file. 
+
+Valid command line arguments (override anything specified in the file format):
+-g n Specify the desired generation number. If omitted, the default is n = 0.
+
+-h Display a help screen that describes the program, and terminate before starting the GUI.
+
+-s n Specify the size, in pixels, of each square in the grid (default is 10). Grid lines are omitted when the size is less than 4.
+
+-tx l..h Set the x range of the terrain; overrides values specified in the input file.
+
+-ty l..h Set the y range of the terrain; overrides values specified in the input file.
+
+-wx l..h Set the (initial) x range of the output window (default is terrain x range).
+
+-wy l..h Set the (initial) y range of the output window (default is terrain y range).
+
+Like life, -v and -f are accepted as valid arguments, but they are ignored. 
+
+
+Code Structure:
+
+The code is split into several modules. The goal was to achieve good, object oriented design, but as in all real-world systems, I encountered some problems, and the result is less than perfect. I'll do my best to describe the architecture as it is, starting with each module.
+
+SimOptions
+	This module is basically a massive class containing all of the settings the user will ever need to specify. It is open for extension in case part 2 requires some unique settings. This module, as it is kind of a "glue" module, very tightly coupled to nearly every other module in the system. This could be removed by creating some more general interfaces which it would implement, or passing ONLY the information a specific module needs to that module.
+
+	You'll notice that there are some strange public instance variables. This is my greatest regret in this design, but we'll learn about their usefulness now. 
+
+FileParser
+	This module is a neat little class hierarchy I spent WAY too much time on, only to achieve a moderately cool result. Basically, here's what happens:
+		1) A FileParser, f, is created and passed a string representing the input file, or "" for stdin. 
+		2) f is given a proper ParserCreator, an object which is capable of producing a StructElementParser object which represents the structure of an entire input file. 
+			This parser creator basically creates a strange structure which knows how to read an input, and where to store it. This is why those properties on the SimOptions object are public. They need to be open for direct and flexible changing by the file parser architecture.
+		3) f's parse method is called, and it parses the file, resulting in the correct arguments ending up in their places in the SimOptions object.
+
+
+ArgumentParser
+	This is a much simpler object which just fills a SimOptions object up with the command line arguments, overriding anything present in the object.
+
+Grid
+	This just represents a basic game grid where states are strings (this might be a bad decision, but it's working out well for me). This is the Model.
+
+SimController
+	This module is the Controller for our simulation. It owns a Grid model, and provides a simple interface for manipulating it and retrieving its state. 
+
+	This object must be given a proper SimRunner, an object which will perform the actual computation for a single step in the simulation. This is an instance of a Strategy design pattern, and it is one of my proudest files.
+
+LifeView
+	This module has some simple classes for outputting a SimController's state to the command line as a file or visually, or printing some help.
+
+LifeDrawingWidget
+	This is a simple, hastily written Qt Widget which knows how to draw the SimController  state to the screen with the help of our SimOptions friend.
+
+life.cpp and life_gui.cpp serve only to connect all of these strange modules together in the proper order. Unfortunately, there is a lot of temporal coupling within and amoungst the files, so this is a rather difficult job. 
+
+Notes:
+	I have defaults set for EVERYTHING so almost any input file is valid, so long as it contains Life = {};
+	
