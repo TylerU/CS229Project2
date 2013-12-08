@@ -11,44 +11,32 @@
 #include "Grid.h"
 #include "SimController.h"
 #include "LifeView.h"
-#include "LifeDrawingWidget.h"
+#include "LifeScrollWidget.h"
+#include "InitHelpers.h"
+
 int main( int argc, char **argv )
 {
 	QApplication app( argc, argv );
  
 	
-	LifeGUISimOptions *options = NULL;
-	SimController *sc = NULL;
+	LifeObjects objs;
 	try{
-		LifeGUIArgumentParser ap(argc, argv);
-		FileParser fp(ap.getFileNameOrEmptyString());
-		string type = fp.getId();
-		if(type == "Life"){
-			fp.setSimOptions(options = new LifeGUISimOptions());
-			ap.setOptions(options);
-			fp.setParser(new ParserCreator(options));
-			options->setSimType(type);
-		}
-		fp.readFile();
-		ap.parse();
-		options->resolveDefaults();
-
-		sc = new SimController(options, new LifeSimRunner());
-		sc->simGenerations(options->getOutputGeneration());
+		objs = initLife(argc, argv);
+		objs.sc->simGenerations(objs.options->getOutputGeneration());
 	}catch (runtime_error e){
 		fprintf(stderr, "Error encountered: %s\n", e.what());
 		return 1;
 	}
 	
-	if(options->getShowHelp()){
+	if(objs.options->getShowHelp()){
 		append_file_to_file("LifeGuiHelp.txt", stdout);
 		return 0;
 	}
 	else{
-		LifeDrawingWidget myWidget(options, sc);
-		myWidget.setWindowTitle(QString(options->name.getString().c_str()));
+		LifeScrollWidget myWidget(objs.options, objs.sc);
+		myWidget.setWindowTitle(QString(objs.options->name.getString().c_str()));
 		myWidget.show();
-
+		
 		return app.exec();
 	}
 }

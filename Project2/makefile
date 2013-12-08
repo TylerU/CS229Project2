@@ -9,14 +9,14 @@ proj2.tar.gz: makefile README LifeHelp.txt LifeGuiHelp.txt ArgumentParsing.cpp A
 	tar -czf proj2.tar.gz makefile README LifeHelp.txt LifeGuiHelp.txt ArgumentParsing.cpp ArgumentParsing.h FileParsing.cpp FileParsing.h Grid.cpp Grid.h life.cpp life_gui.cpp LifeDrawingWidget.cpp LifeDrawingWidget.h LifeView.cpp LifeView.h SimController.cpp SimController.h SimOptions.cpp SimOptions.h 
 
 #These dependencies are weird. I need it to know when to update, but I can't just say life_gui.o and LifeDrawingWidget.o
-life_gui: life_gui.cpp LifeDrawingWidget.h LifeDrawingWidget.cpp ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
+life_gui: life_gui.cpp LifeScrollWidget.h LifeScrollWidget.cpp  LifeDrawingWidget.h LifeDrawingWidget.cpp ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
 	qmake-qt4 -project -o life_gui.pro
 	qmake-qt4 -makefile -o gui_makefile life_gui.pro
 	sed -e 's/life.o//g' <gui_makefile >gui_makefile_fixed
 	make -f gui_makefile_fixed
 
-life: life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
-	g++ -o life life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o
+life: life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o InitHelpers.o
+	g++ -o life life.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o InitHelpers.o
 
 life.o: life.cpp ArgumentParsing.h FileParsing.h Grid.h LifeView.h SimController.h SimOptions.h
 	g++ -c life.cpp
@@ -38,3 +38,7 @@ SimController.o: SimController.cpp SimController.h SimOptions.h Grid.h
 
 SimOptions.o: SimOptions.cpp SimOptions.h 
 	g++ -c SimOptions.cpp
+
+InitHelpers.o: InitHelpers.cpp InitHelpers.h SimController.h ArgumentParsing.h FileParsing.h SimOptions.h
+	g++ -c InitHelpers.cpp
+
