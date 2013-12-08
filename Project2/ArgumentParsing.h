@@ -21,12 +21,4 @@ public:
 	string getFileNameOrEmptyString();
 };
 
-class LifeGUIArgumentParser : public ArgumentParser{
-protected:
-	virtual void handleArg();
-	LifeGUISimOptions *getSimOptions();
-public:
-	LifeGUIArgumentParser(int _argc, char *_argv[]) : ArgumentParser(_argc, _argv) {}
-
-};
 #endif

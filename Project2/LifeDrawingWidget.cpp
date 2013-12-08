@@ -1,7 +1,7 @@
 #include "LifeDrawingWidget.h"
 
  
-/*LifeDrawingWidget::LifeDrawingWidget(LifeGUISimOptions *options, SimController *ctrl){
+/*LifeDrawingWidget::LifeDrawingWidget(SimOptions *options, SimController *ctrl){
 	if(options == NULL || ctrl == NULL) throw new runtime_error("Cannot have null options for simulation controller");
 	opts = options;
 	controller = ctrl;

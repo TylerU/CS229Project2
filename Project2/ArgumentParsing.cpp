@@ -55,6 +55,12 @@ void ArgumentParser::handleArg(){
 	else if(thisArg == "-wy"){
 		getAndStoreRangeArg(&opts->windowY);
 	}
+	else if(thisArg == "-s"){
+		curArg++;
+		int size = getCurIntArg();
+		opts->setBlockSize(size);
+	}
+
 	else{
 		throw new runtime_error("Unexpected argument encountered. I don't know what " + string(argv[curArg]) + " is");
 	}
@@ -100,21 +106,5 @@ string ArgumentParser::getFileNameOrEmptyString(){
 	}
 	else{
 		return string("");
-	}
-}
-
-LifeGUISimOptions *LifeGUIArgumentParser::getSimOptions(){
-	return (LifeGUISimOptions *)opts;
-}
-
-void LifeGUIArgumentParser::handleArg(){
-	string thisArg = getCurArg();
-	if(thisArg == "-s"){
-		curArg++;
-		int size = getCurIntArg();
-		getSimOptions()->setBlockSize(size);
-	}
-	else{
-		ArgumentParser::handleArg();
 	}
 }

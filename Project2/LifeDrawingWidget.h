@@ -9,10 +9,10 @@
 //class LifeDrawingWidget : public QWidget{
 //    Q_OBJECT
 //public:
-//    LifeDrawingWidget(LifeGUISimOptions *options, SimController *ctrl);
+//    LifeDrawingWidget(SimOptions *options, SimController *ctrl);
 //    virtual ~LifeDrawingWidget(){} 
 //protected:
-//	LifeGUISimOptions *opts; 
+//	SimOptions *opts; 
 //	SimController *controller;
 //    void paintEvent(QPaintEvent *event);
 //signals:
