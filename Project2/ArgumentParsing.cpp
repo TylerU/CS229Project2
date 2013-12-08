@@ -60,7 +60,9 @@ void ArgumentParser::handleArg(){
 		int size = getCurIntArg();
 		opts->setBlockSize(size);
 	}
-
+	else if(thisArg == "-c"){
+		opts->setShowControls();
+	}
 	else{
 		throw new runtime_error("Unexpected argument encountered. I don't know what " + string(argv[curArg]) + " is");
 	}

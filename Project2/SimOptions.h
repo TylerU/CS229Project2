@@ -175,6 +175,7 @@ protected:
 	int outputGeneration;
 	bool showHelp;
 	int blockSize;
+	bool controls;
 
 public:
 	StringContainer name;
@@ -190,6 +191,10 @@ public:
 		showHelp = false;
 		blockSize = 10;
 	}
+
+	void setShowControls(){ controls = true; }
+
+	bool showControls(){ return controls; }
 
 	int getBlockSize(){ return blockSize; }
 
