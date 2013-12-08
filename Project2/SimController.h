@@ -20,6 +20,24 @@ public:
 	virtual void runOnPoint(Grid *grid, int x, int y);
 };
 
+class ElementarySimRunner : public SimRunner{
+private:
+	int rule;
+	int getPattern(Grid *grid, int x, int y);
+	int getNthBitOf(int n, int num);
+public:
+	ElementarySimRunner(int r) {rule = r;}
+	virtual void runOnPoint(Grid *grid, int x, int y);
+};
+
+class WireWorldSimRunner : public SimRunner{
+private:
+	int getNumNeighborHeads(Grid *grid, int x, int y);
+public:
+	virtual void runOnPoint(Grid *grid, int x, int y);
+};
+
+
 class SimController{
 protected:
 	int gen;

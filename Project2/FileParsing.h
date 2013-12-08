@@ -148,10 +148,18 @@ protected:
 	StructElementParser *parser;
 	SimOptions* opts;
 	virtual void addParserOptions();
+	virtual void addOptionsToMainStruct(map<string, ElementParser*> *mainStruct) {}
 public:
 	ParserCreator(SimOptions* options);
 	
 	StructElementParser *getParser();
+};
+
+class ElementaryParserCreator : public ParserCreator{
+protected:
+	virtual void addOptionsToMainStruct(map<string, ElementParser*> *mainStruct);
+public:
+	ElementaryParserCreator(ElementarySimOptions *options) : ParserCreator(options){}
 };
 
 class FileParser{

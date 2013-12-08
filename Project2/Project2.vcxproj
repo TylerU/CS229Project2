@@ -65,6 +65,7 @@
     <ClCompile Include="ArgumentParsing.cpp" />
     <ClCompile Include="FileParsing.cpp" />
     <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="InitHelpers.cpp" />
     <ClCompile Include="life.cpp" />
     <ClCompile Include="LifeDrawingWidget.cpp" />
     <ClCompile Include="life_gui.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="ArgumentParsing.h" />
     <ClInclude Include="FileParsing.h" />
     <ClInclude Include="Grid.h" />
+    <ClInclude Include="InitHelpers.h" />
     <ClInclude Include="LifeDrawingWidget.h" />
     <ClInclude Include="LifeView.h" />
     <ClInclude Include="SimController.h" />

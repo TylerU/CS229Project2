@@ -65,10 +65,16 @@ void ParserCreator::addParserOptions(){
 	mainStruct->insert(pair<string, ElementParser*>("Chars", charsParser));
 	mainStruct->insert(pair<string, ElementParser*>("Colors", colorsParser));
 	mainStruct->insert(pair<string, ElementParser*>("Initial", initialParser));
+	
+	addOptionsToMainStruct(mainStruct);
 
 	parser = new StructElementParser(mainStruct);
 }
 
+void ElementaryParserCreator::addOptionsToMainStruct(map<string, ElementParser*> *mainStruct){
+	IntElementParser *ruleParser = new IntElementParser(&((ElementarySimOptions*) opts)->ruleContainer);
+	mainStruct->insert(pair<string, ElementParser*>("Rule", ruleParser));	
+}
 
 FileParser::FileParser(string file_n){
 	if(file_n == ""){

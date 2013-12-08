@@ -48,6 +48,86 @@ void LifeSimRunner::runOnPoint(Grid* grid, int x, int y){
 	}
 }
 
+int WireWorldSimRunner::getNumNeighborHeads(Grid *grid, int x, int y){
+	int sum = 0;
+	for(int dx = -1; dx <= 1; dx++){
+		for(int dy = -1; dy <= 1; dy++){
+			if(dx == 0 && dy == 0){
+			}
+			else{
+				if(grid->getStateOfCoord(x+dx, y+dy) == "Head"){
+					sum++;
+				}
+			}
+		}
+	}
+	return sum;
+}
+
+
+void WireWorldSimRunner::runOnPoint(Grid* grid, int x, int y){
+	string state = grid->getStateOfCoord(x, y);
+	if(state == "Empty"){
+		grid->setStateOfCoord(x, y, "Empty");
+	}
+	else if (state == "Head"){
+		grid->setStateOfCoord(x, y, "Tail");
+	}
+	else if (state == "Tail"){
+		grid->setStateOfCoord(x, y, "Wire");
+	}
+	else if (state == "Wire"){
+		int numHeads = getNumNeighborHeads(grid, x, y);
+		if(numHeads == 1 || numHeads == 2){
+			grid->setStateOfCoord(x, y, "Head");
+		}
+		else{
+			grid->setStateOfCoord(x, y, "Wire");
+		}
+	}
+}
+
+int ElementarySimRunner::getPattern(Grid *grid, int x, int y){
+	int pat = 0;
+	if(grid->getStateOfCoord(x-1, y+1) == "One"){
+		pat += 4;
+	}
+
+	if(grid->getStateOfCoord(x, y+1) == "One"){
+		pat += 2;
+	}
+
+	if(grid->getStateOfCoord(x+1, y+1) == "One"){
+		pat += 1;
+	}
+
+	return pat;
+}
+
+
+int ElementarySimRunner::getNthBitOf(int n, int num){
+	return (num & (1 << n)) >> n;
+}
+
+
+void ElementarySimRunner::runOnPoint(Grid* grid, int x, int y){
+	string state = grid->getStateOfCoord(x, y);
+	if(state == "One"){
+		grid->setStateOfCoord(x, y, "One");
+	}
+	else{//Assume "Zero"
+		int pattern = getPattern(grid, x, y);
+		int bit = getNthBitOf(pattern, rule);
+		if(bit == 0){
+			grid->setStateOfCoord(x, y, "Zero");
+		}
+		else{
+			grid->setStateOfCoord(x, y, "One");
+		}
+	}
+}
+
+
 const PairList * SimController::getPairListForState(string strstate){
 	return grid->getPairListForState(strstate);
 }

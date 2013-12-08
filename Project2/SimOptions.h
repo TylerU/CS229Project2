@@ -174,6 +174,7 @@ protected:
 	OutputType outputType;
 	int outputGeneration;
 	bool showHelp;
+	int blockSize;
 
 public:
 	StringContainer name;
@@ -187,7 +188,14 @@ public:
 		outputGeneration = 0;
 		outputType = VISUALOUT;
 		showHelp = false;
+		blockSize = 10;
 	}
+
+	int getBlockSize(){ return blockSize; }
+
+	void setBlockSize(int s) { blockSize = s; }
+
+	bool drawLines(){ return blockSize >= 4; }
 
 	StateDisplayInfo *getDisplayInfoObj (string state) {
 		return displayInfo[state];
@@ -275,15 +283,49 @@ public:
 	}
 };
 
-class LifeGUISimOptions : public LifeSimOptions{
-protected:
-	int blockSize;
+class WireWorldSimOptions : public SimOptions{
 public:
-	LifeGUISimOptions() : LifeSimOptions(){
-		blockSize = 10;
+	WireWorldSimOptions(){
+		displayInfo.insert(pair<string, StateDisplayInfo*>("Empty", new StateDisplayInfo(32, 64, 64, 64)));
+		displayInfo.insert(pair<string, StateDisplayInfo *>("Head", new StateDisplayInfo(35, 255, 64, 64)));
+		displayInfo.insert(pair<string, StateDisplayInfo *>("Tail", new StateDisplayInfo(43, 255, 64, 255)));
+		displayInfo.insert(pair<string, StateDisplayInfo *>("Wire", new StateDisplayInfo(46, 64, 64, 255)));
+		initial.insert(pair<string, PairList *>("Empty", new PairList()));
+		initial.insert(pair<string, PairList *>("Head", new PairList()));
+		initial.insert(pair<string, PairList *>("Tail", new PairList()));
+		initial.insert(pair<string, PairList *>("Wire", new PairList()));
 	}
-	int getBlockSize(){ return blockSize; }
-	void setBlockSize(int s) { blockSize = s; }
-	bool drawLines(){ return blockSize >= 4; }
+	virtual vector<string> getValidIdentifiers() const{
+		vector<string> result;
+		result.push_back("Empty");
+		result.push_back("Head");
+		result.push_back("Tail");
+		result.push_back("Wire");
+		return result;
+	}
+	virtual string getDefaultStateString() const{
+		return "Empty";
+	}
 };
+
+class ElementarySimOptions : public SimOptions{
+public:
+	IntContainer ruleContainer;
+	ElementarySimOptions() : ruleContainer(30){
+		displayInfo.insert(pair<string, StateDisplayInfo*>("Zero", new StateDisplayInfo(46, 255, 255, 255)));
+		displayInfo.insert(pair<string, StateDisplayInfo *>("One", new StateDisplayInfo(35, 64, 64, 64)));
+		initial.insert(pair<string, PairList *>("Zero", new PairList()));
+		initial.insert(pair<string, PairList *>("One", new PairList()));
+	}
+	virtual vector<string> getValidIdentifiers() const{
+		vector<string> result;
+		result.push_back("Zero");
+		result.push_back("One");
+		return result;
+	}
+	virtual string getDefaultStateString() const{
+		return "Zero";
+	}
+};
+
 #endif
