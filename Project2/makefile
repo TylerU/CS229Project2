@@ -1,7 +1,7 @@
 all: life_gui life
 
 clean:
-	rm -f life life_gui life.o life_gui.o LifeDrawingWidget.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o LifeScrollWidget.o LifeControlsWidget.o InitHelpers.o gui_makefile gui_makefile_fixed life_gui.pro moc_LifeControlsWidget.cpp moc_LifeDrawingWidget.cpp moc_LifeDrawingWidget.o moc_LifeScrollWidget.cpp moc_LifeScrollWidget.o
+	rm -f life life_gui life.o life_gui.o LifeDrawingWidget.o ArgumentParsing.o FileParsing.o Grid.o LifeView.o SimController.o SimOptions.o life_gui.o LifeDrawingWidget.o LifeScrollWidget.o LifeControlsWidget.o InitHelpers.o gui_makefile gui_makefile_fixed life_gui.pro moc_LifeControlsWidget.cpp moc_LifeDrawingWidget.cpp moc_LifeDrawingWidget.o moc_LifeScrollWidget.cpp moc_LifeScrollWidget.o moc_LifeControlsWidget.o
 
 tarball: proj2.tar.gz
 
