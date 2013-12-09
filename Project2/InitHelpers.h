@@ -10,6 +10,7 @@ typedef struct {
 	SimController *sc;
 } LifeObjects;
 
+/* Parses command line args, files, and creates the options and sim controller objects */
 LifeObjects initLife(int argc, char* argv[]);
 
 #endif

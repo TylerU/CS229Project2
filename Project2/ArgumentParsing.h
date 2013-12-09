@@ -3,6 +3,9 @@
 #include "SimOptions.h"
 #include <stdexcept>
 
+/*
+	Parses command line arguments into the simOptions settings object
+*/
 class ArgumentParser{
 protected:
 	int argc;

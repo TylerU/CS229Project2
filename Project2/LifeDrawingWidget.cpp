@@ -1,4 +1,4 @@
-/*#include "LifeDrawingWidget.h"
+#include "LifeDrawingWidget.h"
 
  
 LifeDrawingWidget::LifeDrawingWidget(SimOptions *options, SimController *ctrl){
@@ -48,4 +48,4 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
 	}
 
 }
-*/
+

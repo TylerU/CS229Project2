@@ -7,12 +7,19 @@
 
 using namespace std;
 
+/*
+	Contains a command, such as 'Set point (1,1) to state "Alive"', which can be buffered, then applied at a later time.
+*/
 class PointSetBuffer{
 public:
 	PointSetBuffer(Pair c, string s) : coord(c.getFirst(), c.getSecond()), id(s) {}
 	Pair coord;
 	string id;
 };
+
+/*
+	Stores the grid and allows manipulation as well as buffered manipulation.
+*/
 
 class Grid{
 protected:
@@ -39,7 +46,13 @@ public:
 	void setYRange(Range r);
 	Range getXRange();
 	Range getYRange();
+	/*
+		Sets internal variables such that setStateOfCoord commands until applyChangeBuffer() call are stored rather than applied right away.
+	*/
 	void startChangeBuffering();
+	/*
+		Stops buffering and applys all changes in the buffer
+	*/
 	void applyChangeBuffer();
 	virtual ~Grid();
 };

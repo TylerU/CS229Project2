@@ -20,6 +20,32 @@ StructElementParser *ParserCreator::getParser(){
 }
 
 void ParserCreator::addParserOptions(){
+	/*
+	Name = <String>;
+	Terrain = {
+		Xrange = <Range>;
+		Yrange = <Range> ;
+	};
+	Window = {
+		Xrange = <Range>;
+		Yrange = <Range> ;
+	};
+	Chars = {
+		<State1> = <Integer>;
+			...
+		<StateN> = <Integer>;
+	};
+	Colors = {
+		<State1> = <Triple>;
+			...
+		<StateN> = <Triple>;
+	};
+	Initial = {
+		<State1> = <PairList>;
+			...
+		<StateN> = <PairList>;
+	};
+	*/
 	StringElementParser *nameParser = new StringElementParser(&opts->name);
 
 	RangeElementParser *terrainXParser = new RangeElementParser(&opts->terrainX);

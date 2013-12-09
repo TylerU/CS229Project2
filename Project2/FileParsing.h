@@ -15,7 +15,6 @@ using namespace std;
 
 
 
-
 class ElementParser{
 protected:
 	FILE* in;
@@ -119,7 +118,9 @@ public:
 	virtual void read(FILE *inf);
 };
 
-
+/*
+	Capable of parsing some String -> ElementParser pairs in {}
+*/
 class StructElementParser : public ElementParser{
 private:
 	map<string, ElementParser*> *elements;
@@ -142,7 +143,9 @@ public:
 	}
 };
 
-
+/* 
+	General class for creating a basic file parser (Top level StructElementParser)
+*/
 class ParserCreator{
 protected:
 	StructElementParser *parser;
@@ -155,6 +158,9 @@ public:
 	StructElementParser *getParser();
 };
 
+/* 
+	Adds the Rule parser
+*/
 class ElementaryParserCreator : public ParserCreator{
 protected:
 	virtual void addOptionsToMainStruct(map<string, ElementParser*> *mainStruct);
@@ -162,6 +168,9 @@ public:
 	ElementaryParserCreator(ElementarySimOptions *options) : ParserCreator(options){}
 };
 
+/*
+	Takes a parser and runs it on a file
+*/
 class FileParser{
 public:
 	FileParser(string file_name);

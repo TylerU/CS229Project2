@@ -1,4 +1,4 @@
-/*#ifndef MYWIDGET_H
+#ifndef MYWIDGET_H
 #define MYWIDGET_H
  
 #include <QtGui>
@@ -6,6 +6,8 @@
 #include "SimOptions.h"
 #include "SimController.h"
 #include <stdexcept>
+
+/* Draws a given grid */
 class LifeDrawingWidget : public QWidget{
     Q_OBJECT
 public:
@@ -22,4 +24,4 @@ public slots:
 };
  
 #endif // MYWIDGET_H
- */
+ 

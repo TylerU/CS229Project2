@@ -70,7 +70,7 @@ public:
 	}
 };
 
-
+/* Also used to represent Points */
 class Pair{
 private:
 	int first;
@@ -166,6 +166,7 @@ public:
 	}
 };
 
+/* A too-large and too-open catch-all class for simulation options specified in the input file or command line arguments */
 class SimOptions{
 protected:
 	map<string, StateDisplayInfo *> displayInfo;
@@ -206,7 +207,8 @@ public:
 	StateDisplayInfo *getDisplayInfoObj (string state) {
 		return displayInfo[state];
 	}
-
+	
+	/* Set whether this is Life, WireWorld, or Elementary */
 	void setSimType(string id){
 		simulationId = id;
 	}
@@ -270,6 +272,7 @@ public:
 	virtual string getDefaultStateString() const=0;
 };
 
+/* This subclass prepares the displayInfo and initial maps, and sets the valid identifiers and the default identifier */
 class LifeSimOptions : public SimOptions{
 public:
 	LifeSimOptions(){
@@ -289,6 +292,7 @@ public:
 	}
 };
 
+/* Same options are set as above, just for WireWorld */
 class WireWorldSimOptions : public SimOptions{
 public:
 	WireWorldSimOptions(){
@@ -314,6 +318,7 @@ public:
 	}
 };
 
+/* Sets the defaults and allows for the entry of the integer rule */
 class ElementarySimOptions : public SimOptions{
 public:
 	IntContainer ruleContainer;

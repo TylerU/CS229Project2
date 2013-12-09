@@ -17,6 +17,7 @@ Grid::Grid(SimOptions *opts){
 	yRange = opts->terrainY;
 	int sizex = (ABS(xRange.getHigh() - xRange.getLow())+1);
 	int sizey = (ABS(yRange.getHigh() - yRange.getLow())+1);
+	/*Initialize the 2d array of strings */
 	grid = new string*[sizex];
 	for(int i = 0; i < sizex; i++) grid[i] = new string[sizey];
 
