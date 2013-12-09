@@ -55,7 +55,12 @@ string Grid::getStateOfCoord(int x, int y){
 void Grid::setStateOfCoord(int x, int y, string s){
 	if(!buffering){
 		if(vectorContains(validIds, s)){
-			grid[translateTerrainXToGridX(x)][translateTerrainYToGridY(y)] = s;
+			if(withinTerrain(x,y)){
+				grid[translateTerrainXToGridX(x)][translateTerrainYToGridY(y)] = s;
+			}
+			else{
+				//Not in terrain, do nothing
+			}
 		}
 		else{
 			throw new runtime_error("Attempting to set square to an invalid state");	
