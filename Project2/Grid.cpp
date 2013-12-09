@@ -66,8 +66,8 @@ void Grid::setStateOfCoord(int x, int y, string s){
 }
 
 void Grid::setAllToDefaultState(){
-	for(int x = 0; x < translateTerrainXToGridX(xRange.getHigh()); x++){
-		for(int y = 0; y < translateTerrainYToGridY(yRange.getHigh()); y++){
+	for(int x = 0; x <= translateTerrainXToGridX(xRange.getHigh()); x++){
+		for(int y = 0; y <= translateTerrainYToGridY(yRange.getHigh()); y++){
 			grid[x][y] = defaultState.c_str();
 		}
 	}
