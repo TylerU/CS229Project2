@@ -92,10 +92,11 @@ PairList * Grid::getPairListForState(string statestr){
 		for(int x = 0; x < translateTerrainXToGridX(xRange.getHigh()); x++){
 			for(int y = 0; y < translateTerrainYToGridY(yRange.getHigh()); y++){
 				if(grid[x][y] == statestr){
-					res->addPair(x, y);
+					res->addPair(xRange.getLow() + x, yRange.getLow() + y);
 				}
 			}
 		}
+		return res;
 	}
 	else{
 		throw new runtime_error("Requested pair list for an invalid state. Silly.");

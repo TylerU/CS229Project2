@@ -1,4 +1,4 @@
-#include <QtGui>
+/*#include <QtGui>
 #include <QApplication>
 #include <QString>
 
@@ -47,3 +47,4 @@ int main( int argc, char **argv )
 		return app.exec();
 	}
 }
+*/

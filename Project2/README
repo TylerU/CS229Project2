@@ -1,10 +1,16 @@
 CS229 Project 2 Part 1
 
-This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of GoL specified as a command line argument. 
+This program simulates Conway's Game of Life. Given options specified in a format specified in Appendix A of the assignment description, read from standard in or a given file name, this program simulates a number of generations of certain cellular automata specified as a command line argument. 
+
+
+Valid cellular automata:
+	WireWorld
+	Elementary
+	Life
 
 life
 
-Outputs the resulting GoL grid to stdout using the characters specified in the input file. 
+Outputs the resulting cellular automata grid to stdout using the characters specified in the input file. 
 
 Valid command line arguments (override anything specified in the file format):
 -f			Output should be in the same file format as Appendix A.
@@ -23,11 +29,11 @@ Valid command line arguments (override anything specified in the file format):
 
 -wy l..h	Set the y range of the output window; otherwise this defaults to the y range of the terrain.
 
-
+-c is also accepted, but is ignored. 
 
 life_gui
 
-After simulating the specified number of generations, this program creates a qt window and creates a visual display of the game state based on some parameters and the settings in the input file. 
+After simulating the specified number of generations, this program creates a qt window and creates a visual display of the game state based on some parameters and the settings in the input file. If the -c switch is specified, a controls window also pops that allows the user to animate the automata, step through generations, restart, and much more. 
 
 Valid command line arguments (override anything specified in the file format):
 -g n Specify the desired generation number. If omitted, the default is n = 0.
@@ -43,6 +49,8 @@ Valid command line arguments (override anything specified in the file format):
 -wx l..h Set the (initial) x range of the output window (default is terrain x range).
 
 -wy l..h Set the (initial) y range of the output window (default is terrain y range).
+
+-c Display the controls window.
 
 Like life, -v and -f are accepted as valid arguments, but they are ignored. 
 
@@ -80,6 +88,15 @@ LifeView
 
 LifeDrawingWidget
 	This is a simple, hastily written Qt Widget which knows how to draw the SimController  state to the screen with the help of our SimOptions friend.
+
+LifeScrollWidget
+	This widget is a MainWindow containing a scroll widget which contains the drawing widget. 
+
+LifeControlsWidget
+	A widget containing the controls window and relevant slots for responding to events. 
+
+InitHelpers
+	A simple couple of methods for initializing the entire system, including reading files, parsing command line arguments, and returning an object with the options object and a controller object. 
 
 life.cpp and life_gui.cpp serve only to connect all of these strange modules together in the proper order. Unfortunately, there is a lot of temporal coupling within and amoungst the files, so this is a rather difficult job. 
 
