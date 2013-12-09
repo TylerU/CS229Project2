@@ -159,3 +159,9 @@ void SimController::simGenerations(int g){
 SimController::~SimController(){
 	delete grid;
 }
+
+void SimController::reset(){
+	delete grid;
+	grid = new Grid(opts);
+	gen = 0;
+}

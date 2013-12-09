@@ -12,6 +12,7 @@
 #include "SimController.h"
 #include "LifeView.h"
 #include "LifeScrollWidget.h"
+#include "LifeControlsWidget.h"
 #include "InitHelpers.h"
 
 int main( int argc, char **argv )
@@ -36,7 +37,13 @@ int main( int argc, char **argv )
 		LifeScrollWidget myWidget(objs.options, objs.sc);
 		myWidget.setWindowTitle(QString(objs.options->name.getString().c_str()));
 		myWidget.show();
-		
+		LifeControlsWidget ctrlsWidget(objs.options, objs.sc, myWidget);
+		ctrlsWidget.setWindowTitle("Life GUI Controls");
+		ctrlsWidget.resize(300,300);
+		ctrlsWidget.move(500,0);
+		if(objs.options->showControls()){
+			ctrlsWidget.show();
+		}		
 		return app.exec();
 	}
 }

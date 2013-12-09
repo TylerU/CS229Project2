@@ -1,52 +1,63 @@
 #include "Grid.h"
+#include <stdlib.h>
+#include <vector>
+#include <algorithm>
+#include <stdio.h>
+
+#define ABS(X) ((X) < 0) ? -(X) : (X)
+
 using namespace std;
 
+bool Grid::vectorContains(vector<std::string> vec, std::string str){
+	return std::find(vec.begin(), vec.end(), str) != vec.end();
+}
+
 Grid::Grid(SimOptions *opts){
-	state = new map<string, PairList *>();
 	xRange = opts->terrainX;
 	yRange = opts->terrainY;
+	int sizex = (ABS(xRange.getHigh() - xRange.getLow())+1);
+	int sizey = (ABS(yRange.getHigh() - yRange.getLow())+1);
+	grid = new string*[sizex];
+	for(int i = 0; i < sizex; i++) grid[i] = new string[sizey];
+
 	buffering = false;
 	defaultState = opts->getDefaultStateString();
-	vector<string> ids = opts->getValidIdentifiers();
-	for(int i = 0; i < ids.size(); i++){
-		if(ids[i] != defaultState){
-			addStartState(ids[i], opts->getInitialList(ids[i]));
+	validIds = opts->getValidIdentifiers();
+	
+	setAllToDefaultState();
+	for(int i = 0; i < validIds.size(); i++){
+		if(validIds[i] != defaultState){
+			addStartState(validIds[i], opts->getInitialList(validIds[i]));
 		}
 	}
 }
 
 void Grid::addStartState(string id, PairList *list){
-	PairList *myList = new PairList();
-	state->insert(pair<string, PairList*>(id, myList));
-	
 	const vector<Pair> *pairList = list->getPairVector();
 	for(int i = 0; i < pairList->size(); i++){
 		Pair his = pairList->at(i);
-		addToState(his, id);
+		setStateOfCoord(his.getFirst(), his.getSecond(), id);
 	}
-
 }
 
 
 string Grid::getStateOfCoord(int x, int y){
-	Pair given(x,y);
-	for(std::map<string, PairList*>::iterator iter = state->begin(); iter != state->end(); ++iter)
-	{
-		string curState =  iter->first;
-		PairList *list = iter->second;
-		if(list->contains(given)){
-			return curState;
-		}
+	if(withinTerrain(x,y)){
+		return grid[translateTerrainXToGridX(x)][translateTerrainYToGridY(y)];
 	}
-	return defaultState;
+	else{
+		return defaultState;
+	}
 }
 
 
 void Grid::setStateOfCoord(int x, int y, string s){
 	if(!buffering){
-		removeFromAllStates(Pair(x,y));
-		if(s != defaultState){
-			addToState(Pair(x,y), s);
+		if(vectorContains(validIds, s)){
+			grid[translateTerrainXToGridX(x)][translateTerrainYToGridY(y)] = s;
+		}
+		else{
+			throw new runtime_error("Attempting to set square to an invalid state");	
 		}
 	}
 	else{
@@ -54,37 +65,41 @@ void Grid::setStateOfCoord(int x, int y, string s){
 	}
 }
 
-void Grid::addToState(Pair coord, string s){
-	try{
-		if(coord.getFirst() <= xRange.getHigh() && coord.getFirst() >= xRange.getLow() && coord.getSecond() <= yRange.getHigh() && coord.getSecond() >= yRange.getLow()){
-			PairList *p = (*state)[s];
-			p->addPair(coord.getFirst(), coord.getSecond());
+void Grid::setAllToDefaultState(){
+	for(int x = 0; x < translateTerrainXToGridX(xRange.getHigh()); x++){
+		for(int y = 0; y < translateTerrainYToGridY(yRange.getHigh()); y++){
+			grid[x][y] = defaultState.c_str();
 		}
-		else{
-			//Ignore entries outside our terrain range
-		}
-	}
-	catch(...){
-		throw new runtime_error("Attempting to set state of a coordinate to an invalid state");
 	}
 }
 
-void Grid::removeFromAllStates(Pair coord){
-	for(std::map<string, PairList*>::iterator iter = state->begin(); iter != state->end(); ++iter)
-	{
-		string curState =  iter->first;
-		PairList *list = iter->second;
-		list->remove(coord);
-	}
+bool Grid::withinTerrain(int x, int y){
+	Pair coord(x,y);
+	return coord.getFirst() <= xRange.getHigh() && coord.getFirst() >= xRange.getLow() && coord.getSecond() <= yRange.getHigh() && coord.getSecond() >= yRange.getLow();
+}
+
+int Grid::translateTerrainXToGridX(int x){
+	return ABS(x - xRange.getLow());
+}
+
+int Grid::translateTerrainYToGridY(int y){
+	return ABS(y - yRange.getLow());
 }
 
 PairList * Grid::getPairListForState(string statestr){
-	try{
-		return (*state)[statestr];
+	if(vectorContains(validIds, statestr)){
+		PairList *res = new PairList();
+		for(int x = 0; x < translateTerrainXToGridX(xRange.getHigh()); x++){
+			for(int y = 0; y < translateTerrainYToGridY(yRange.getHigh()); y++){
+				if(grid[x][y] == statestr){
+					res->addPair(x, y);
+				}
+			}
+		}
 	}
-	catch(...){
+	else{
 		throw new runtime_error("Requested pair list for an invalid state. Silly.");
-	}
+	}	
 }
 
 void Grid::setXRange(Range r){
@@ -121,5 +136,5 @@ void Grid::applyChangeBuffer(){
 }
 
 Grid::~Grid(){
-	delete state;
+	delete[] grid;
 }

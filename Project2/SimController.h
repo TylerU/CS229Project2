@@ -41,7 +41,7 @@ public:
 class SimController{
 protected:
 	int gen;
-	const SimOptions *opts;
+	SimOptions *opts;
 	Grid *grid;
 	SimRunner *mySim;
 protected:
@@ -50,8 +50,9 @@ public:
 	SimController(SimOptions *options, SimRunner *sim);
 	virtual string getStateOfCoord(int x, int y);
 	virtual void simGenerations(int g);
-	virtual const PairList * getPairListForState(string state);
+	virtual const PairList *getPairListForState(string state);
 	inline int getCurGeneration() { return gen; }
 	virtual ~SimController();
+	virtual void reset();
 };
 #endif

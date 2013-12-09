@@ -11,8 +11,8 @@ class LifeScrollWidget : public QMainWindow {
 public:
 	LifeScrollWidget(SimOptions *options, SimController *ctrl);
 	virtual ~LifeScrollWidget(){}
+	LifeDrawingWidget *displayWidget;
 protected:
-
 signals:
 
 public slots:

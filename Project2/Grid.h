@@ -16,17 +16,20 @@ public:
 
 class Grid{
 protected:
-	map<string, PairList *> *state;
+	string **grid;
 	string defaultState;
 	Range xRange;
 	Range yRange;
 	vector<PointSetBuffer> curChangeBuffer;
+	vector<string> validIds;
 	bool buffering;
 protected:
-	void removeFromAllStates(Pair p);
-	void addToState(string state, Pair p);
+	void setAllToDefaultState();
+	bool vectorContains(vector<string> vec, string str);
+	bool withinTerrain(int x, int y);
+	int translateTerrainXToGridX(int);
+	int translateTerrainYToGridY(int);
 	void addStartState(string id, PairList *list);
-	void addToState(Pair p, string s);
 public:
 	Grid(SimOptions *opts);
 	virtual string getStateOfCoord(int x, int y);

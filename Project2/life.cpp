@@ -6,6 +6,7 @@
 #include "LifeView.h"
 #include "InitHelpers.h"
 #include <stdexcept>
+#include <stdio.h>
 
 
 
