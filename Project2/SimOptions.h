@@ -190,6 +190,7 @@ public:
 		outputType = VISUALOUT;
 		showHelp = false;
 		blockSize = 10;
+		controls = false;
 	}
 
 	void setShowControls(){ controls = true; }

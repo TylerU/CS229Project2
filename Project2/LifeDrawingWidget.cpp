@@ -13,15 +13,13 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
     //A paint device can be a QWidget, a QPixmap or a QImage
  
 		QPainter painter(this);
-
+		int numVerticalLines = opts->windowX.getHigh() - opts->windowX.getLow() + 1;
+		int numHorizontalLines = opts->windowY.getHigh() - opts->windowY.getLow() + 1;
+		int width  = (numVerticalLines) * opts->getBlockSize();
+		int height = (numHorizontalLines) * opts->getBlockSize();
+		int lineWidth = 1;
+		resize(width, height);			
 		if(opts->drawLines()){
-			int numVerticalLines = opts->windowX.getHigh() - opts->windowX.getLow() + 1;
-			int numHorizontalLines = opts->windowY.getHigh() - opts->windowY.getLow() + 1;
-			int width  = (numVerticalLines) * opts->getBlockSize();
-			int height = (numHorizontalLines) * opts->getBlockSize();
-			int lineWidth = 1;
-				
-			resize(width, height);			
 			QPen myPen(Qt::black, lineWidth, Qt::SolidLine);
 			painter.setPen(myPen);
 
