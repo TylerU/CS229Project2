@@ -33,8 +33,8 @@ int main(int argc, char* argv[]){
 		BasicCmdLineView *view = getView(objs.options, objs.sc);
 
 		view->writeout(stdout);
-	}catch (runtime_error e){
-		fprintf(stderr, "Error encountered: %s\n", e.what());
+	}catch (runtime_error *e){
+		fprintf(stderr, "Error encountered: %s\n", e->what());
 	}
 
 //	system("pause");

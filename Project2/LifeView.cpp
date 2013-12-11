@@ -22,7 +22,7 @@ BasicCmdLineView::BasicCmdLineView(SimOptions *options, SimController *contr){
 }
 
 void VisualOutput::writeout(FILE* out){
-	for(int y = opts->windowY.getLow(); y <= opts->windowY.getHigh(); y++){
+	for(int y = opts->windowY.getHigh(); y >= opts->windowY.getLow(); y--){
 		for(int x = opts->windowX.getLow(); x <= opts->windowX.getHigh(); x++){
 			fprintf(out, "%c", opts->getCharforState(controller->getStateOfCoord(x,y)));
 		}

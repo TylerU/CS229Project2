@@ -30,12 +30,12 @@ void LifeDrawingWidget::paintEvent(QPaintEvent *event)
 				painter.drawLine(0, j * opts->getBlockSize(), width, j*opts->getBlockSize());
 		}
 
-	for(int y = opts->windowY.getLow(); y <= opts->windowY.getHigh(); y++){
+	for(int y = opts->windowY.getHigh(); y >= opts->windowY.getLow(); y--){
 		for(int x = opts->windowX.getLow(); x <= opts->windowX.getHigh(); x++){
 			Triple color = opts->getColorForState(controller->getStateOfCoord(x,y));
 			int normX = x;
 			int normY = y;
-			normY -= opts->windowY.getLow();
+			normY = opts->windowY.getHigh() - y;
 			normX -= opts->windowX.getLow();
 			int lineSizeOffset = 1;
 			if(!opts->drawLines()){

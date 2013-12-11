@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 int ArgumentParser::getCurIntArg(){
+	if(curArg >= argc) throw new runtime_error("Supplied integer-requiring flag without a following integer");
 	int i;
 	int res = sscanf(argv[curArg], "%d", &i);
 	if(res != 1) throw new runtime_error("Unable to read int where expecting integer value");
@@ -9,6 +10,7 @@ int ArgumentParser::getCurIntArg(){
 }
 
 Range ArgumentParser::getCurRangeArg(){
+	if(curArg >= argc) throw new runtime_error("Supplied range-requiring flag without a following range");
 	int low = 0, high = 0;
 	int res = sscanf(argv[curArg], "%d..%d", &low, &high);
 	if(res != 2) throw new runtime_error("Invalid formatting in range argument");
